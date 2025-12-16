@@ -709,13 +709,13 @@ void UIManager::renderAboutDialog()
 void UIManager::renderEditMenu()
 {
     if (ImGui::BeginMenu("Edit")) {
-        // if (ImGui::MenuItem("Navigation Mode", "Q", editorMode_ == EditorMode::Navigation)) {
-        //     setEditorMode(EditorMode::Navigation);
-        // }
+        if (ImGui::MenuItem("Navigation Mode", "Q", editorMode_ == EditorMode::Navigation)) {
+            setEditorMode(EditorMode::Navigation);
+        }
 
-        // if (ImGui::MenuItem("Selection Mode", "W", editorMode_ == EditorMode::Selection)) {
-        //     setEditorMode(EditorMode::Selection);
-        // }
+        if (ImGui::MenuItem("Selection Mode", "W", editorMode_ == EditorMode::Selection)) {
+            setEditorMode(EditorMode::Selection);
+        }
 
         ImGui::Separator();
 
