@@ -3,6 +3,7 @@ project(PointCloudTool VERSION 1.0.0 LANGUAGES CXX)
 
 # Option to build against installed CloudCore or local development build
 option(USE_LOCAL_CLOUDCORE "Use local CloudCore build from ../cloudanntool" ON)
+option(STANDALONE_BUNDLE "Create standalone application bundle" ON)
 
 if(USE_LOCAL_CLOUDCORE)
     message(STATUS "Using local CloudCore from ../cloudanntool")
@@ -37,36 +38,118 @@ target_include_directories(pointcloudtool
 
 target_link_libraries(pointcloudtool PRIVATE ${CLOUDCORE_LIB} nfd)
 
-# Copy resources to build directory
+# ============================================================================
+# Resource Handling for Development Build
+# ============================================================================
 if(USE_LOCAL_CLOUDCORE)
-    # In development mode, use shaders from cloudanntool
-    set(SHADER_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../cloudanntool/shaders)
-
-    # Copy shaders
-    file(COPY ${SHADER_SOURCE_DIR} DESTINATION ${CMAKE_BINARY_DIR})
-
-    # Copy assets if they exist
-    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/assets)
-        file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})
-    elseif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../cloudanntool/assets)
-        file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../cloudanntool/assets DESTINATION ${CMAKE_BINARY_DIR})
-    endif()
-else()
-    # When using installed CloudCore
-    set(SHADER_SOURCE_DIR ${CMAKE_INSTALL_PREFIX}/share/cloudanncore/shaders)
-    file(COPY ${SHADER_SOURCE_DIR} DESTINATION ${CMAKE_BINARY_DIR})
-
-    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/assets)
-        file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})
+    # Copy CloudCore shaders to build directory
+    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../cloudanntool/shaders 
+         DESTINATION ${CMAKE_BINARY_DIR}
+         PATTERN "*.glsl")
+    
+    # Copy CloudCore assets if they exist
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../cloudanntool/assets)
+        file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../cloudanntool/assets 
+             DESTINATION ${CMAKE_BINARY_DIR})
     endif()
 endif()
 
-# Installation
-install(TARGETS pointcloudtool
-    RUNTIME DESTINATION bin
-)
+# ============================================================================
+# Installation - Standalone Bundle
+# ============================================================================
+if(STANDALONE_BUNDLE)
+    # Everything goes into a single directory
+    set(BUNDLE_DIR "PointCloudTool")
+    
+    # Install executable
+    install(TARGETS pointcloudtool
+        RUNTIME DESTINATION ${BUNDLE_DIR}
+    )
+    
+    # Install all shaders in one place (CloudCore + app)
+    if(USE_LOCAL_CLOUDCORE)
+        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../cloudanntool/shaders/
+            DESTINATION ${BUNDLE_DIR}/shaders
+            FILES_MATCHING PATTERN "*.glsl"
+        )
+    else()
+        # Copy from installed CloudCore location
+        install(DIRECTORY ${CMAKE_INSTALL_PREFIX}/share/cloudanncore/shaders/
+            DESTINATION ${BUNDLE_DIR}/shaders
+            FILES_MATCHING PATTERN "*.glsl"
+        )
+    endif()
+    
+    # Install app-specific assets
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/assets)
+        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets/
+            DESTINATION ${BUNDLE_DIR}/assets
+        )
+    endif()
+    
+    # Install shared libraries (for Linux/macOS)
+    if(UNIX AND NOT APPLE)
+        install(FILES $<TARGET_FILE:cloudanncore>
+            DESTINATION ${BUNDLE_DIR}/lib
+        )
+    endif()
+    
+    # On Windows, DLLs should be next to exe
+    if(WIN32)
+        # Install PCL and other DLLs if needed
+        install(FILES  ${PCL_LIBRARIES} DESTINATION ${BUNDLE_DIR})
+    endif()
+    
+    # Install README or LICENSE if they exist
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/README.md)
+        install(FILES README.md DESTINATION ${BUNDLE_DIR})
+    endif()
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE)
+        install(FILES LICENSE DESTINATION ${BUNDLE_DIR})
+    endif()
+    
+    message(STATUS "Standalone bundle will be installed to: ${CMAKE_INSTALL_PREFIX}/${BUNDLE_DIR}")
+    
+# ============================================================================
+# Installation - System-wide (FHS compliant)
+# ============================================================================
+else()
+    # Traditional Unix layout
+    install(TARGETS pointcloudtool
+        RUNTIME DESTINATION bin
+    )
+    
+    # Install CloudCore shaders to their own location
+    if(USE_LOCAL_CLOUDCORE)
+        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../cloudanntool/shaders/
+            DESTINATION share/cloudanncore/shaders
+            FILES_MATCHING PATTERN "*.glsl"
+        )
+    endif()
+    
+    # Install app assets
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/assets)
+        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets/
+            DESTINATION share/pointcloudtool/assets
+        )
+    endif()
+endif()
 
-# Install assets and shaders with the application
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/assets)
-    install(DIRECTORY assets/ DESTINATION share/pointcloudtool/assets)
+# ============================================================================
+# CPack Configuration for Distribution
+# ============================================================================
+if(STANDALONE_BUNDLE)
+    set(CPACK_PACKAGE_NAME "PointCloudTool")
+    set(CPACK_PACKAGE_VENDOR "YourName")
+    set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Point Cloud Annotation Tool")
+    
+    # Create a simple zip/tar.gz
+    if(WIN32)
+        set(CPACK_GENERATOR "ZIP")
+    else()
+        set(CPACK_GENERATOR "TGZ")
+    endif()
+    
+    include(CPack)
 endif()
