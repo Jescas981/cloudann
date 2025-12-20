@@ -57,7 +57,7 @@ A lightweight engine for rendering and visualizing point clouds with customizabl
 
 ## DONE
 * Fix coordinate system [Z up, Y forward]
-* PLY save/load files
+* PLY save/load files 
 
 ## License
 

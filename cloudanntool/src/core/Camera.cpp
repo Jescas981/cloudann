@@ -18,7 +18,7 @@ Camera::Camera()
     , right_(1.0f, 0.0f, 0.0f)
     , worldUp_(0.0f, 0.0f, 1.0f)
     , yaw_(0.0f)
-    , pitch_(0.0f)
+    , pitch_(0.7068f)
     , orbitTarget_(0.0f, 0.0f, 0.0f)
     , orbitDistance_(5.0f)
     , isPerspective_(true)
@@ -198,12 +198,14 @@ void Camera::updateCameraVectors()
 {
     Eigen::Vector3f front;
     front.x() = std::sin(yaw_) * std::cos(pitch_);
-    front.y() = std::sin(pitch_);
-    front.z() = std::cos(yaw_) * std::cos(pitch_);
+    front.y() = std::cos(yaw_) * std::cos(pitch_);
+    front.z() = std::sin(pitch_);
 
     front_ = front.normalized();
     right_ = front_.cross(worldUp_).normalized();
     up_ = right_.cross(front_).normalized();
+
+    std::cout << front_ << std::endl;
 }
 
 // Orbit camera controls
