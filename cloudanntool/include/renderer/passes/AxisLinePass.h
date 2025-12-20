@@ -1,6 +1,7 @@
 // renderer/passes/BackgroundPass.h
 #include "renderer/RenderPass.h"
 #include "rendering/AxisLineRenderer.h"
+#include "core/Platform.h"
 
 namespace CloudCore {
 
@@ -16,6 +17,8 @@ public:
     }
 
     void execute(Scene& scene, Camera& camera) override {
+        UNUSED(scene);
+        UNUSED(camera);
         // auto& registry = scene.getRegistry();
         
         // Check if background settings exist

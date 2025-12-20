@@ -20,11 +20,6 @@ public:
                                   const std::vector<uint8_t>& labels,
                                   bool binary = true);
 
-    // Save point cloud in XYZL text format (X Y Z Label per line)
-    static bool saveXYZL(const std::string& filepath,
-                        const PointCloud& pointCloud,
-                        const std::vector<uint8_t>& labels);
-
 private:
     // Helper to write PLY ASCII format with labels
     static bool savePLYASCII(const std::string& filepath,

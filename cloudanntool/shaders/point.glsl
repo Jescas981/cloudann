@@ -31,6 +31,7 @@ uniform vec3 uSelectionColor;
 
 // Label colors (up to 256 labels)
 uniform bool uShowLabels;
+uniform bool uLabelOverride;
 uniform vec3 uLabelColors[256];
 
 // Rendering modes: 0=RGB, 1=FlatColor, 2=AxisX, 3=AxisY, 4=AxisZ, 5=Gradient
@@ -125,7 +126,7 @@ void main()
     } else if (uShowLabels) {
         // Show label colors
         int labelId = int(aLabel);
-        vertexColor = uLabelColors[labelId];
+        vertexColor = (uLabelOverride && labelId == 0) ? applyRenderMode(uColorMode, aPosition, aColor, uUnselectedColor) : uLabelColors[labelId];
     } else {
         // Apply unselected rendering mode
         vertexColor = applyRenderMode(uColorMode, aPosition, aColor, uUnselectedColor);

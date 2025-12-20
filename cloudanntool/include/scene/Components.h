@@ -46,7 +46,7 @@ struct PointCloudComponent {
     float pointSize = 3.0f;
 
     // Simple color mode - applies to all points
-    PointCloudColorMode colorMode = PointCloudColorMode::RGB;
+    PointCloudColorMode colorMode = PointCloudColorMode::FlatColor;
     Eigen::Vector3f flatColor{0.8f, 0.8f, 0.8f}; // Used when colorMode = FlatColor
 
     // Labeling system - each point has a label ID

@@ -55,7 +55,6 @@
 
         # I/O
         src/io/PLYLoader.cpp
-        src/io/PCDLoader.cpp
         src/io/ImageExporter.cpp
         src/io/PointCloudExporter.cpp
 
@@ -106,7 +105,6 @@
 
         # I/O
         include/io/PLYLoader.h
-        include/io/PCDLoader.h
         include/io/ImageExporter.h
         include/io/PointCloudExporter.h
 
@@ -153,6 +151,7 @@
             OpenGL::GL
             EnTT::EnTT
             spdlog::spdlog_header_only
+            happly
             glfw
             glad
     )
@@ -173,7 +172,7 @@
     endif()
 
     # Installation
-    install(TARGETS cloudanncore glad glfw EnTT spdlog_header_only
+    install(TARGETS cloudanncore glad glfw EnTT spdlog_header_only happly
         EXPORT CloudAnnotationCoreTargets
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib

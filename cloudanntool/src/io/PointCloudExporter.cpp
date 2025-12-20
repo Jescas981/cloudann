@@ -3,6 +3,7 @@
 #include "core/Log.h"
 #include <fstream>
 #include <iomanip>
+#include <happly.h>
 
 namespace CloudCore {
 
@@ -114,42 +115,6 @@ bool PointCloudExporter::savePLYBinary(const std::string& filepath,
 
     file.close();
     CC_CORE_INFO("Saved PLY file (binary) with labels: {} ({} points)", filepath, cloud->size());
-    return true;
-}
-
-bool PointCloudExporter::saveXYZL(const std::string& filepath,
-                                 const PointCloud& pointCloud,
-                                 const std::vector<uint8_t>& labels)
-{
-    auto cloud = pointCloud.getCloud();
-    if (!cloud || cloud->empty()) {
-        CC_CORE_ERROR("Cannot save empty point cloud to {}", filepath);
-        return false;
-    }
-
-    std::ofstream file(filepath);
-    if (!file.is_open()) {
-        CC_CORE_ERROR("Failed to open file for writing: {}", filepath);
-        return false;
-    }
-
-    // Write XYZL data (simple text format: X Y Z Label per line)
-    for (size_t i = 0; i < cloud->size(); ++i) {
-        const auto& point = cloud->points[i];
-        uint8_t label = 0;
-        if (!labels.empty() && i < labels.size()) {
-            label = labels[i];
-        }
-
-        file << std::fixed << std::setprecision(6)
-             << point.x << " "
-             << point.y << " "
-             << point.z << " "
-             << static_cast<int>(label) << "\n";
-    }
-
-    file.close();
-    CC_CORE_INFO("Saved XYZL file: {} ({} points)", filepath, cloud->size());
     return true;
 }
 

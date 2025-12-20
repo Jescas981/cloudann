@@ -86,6 +86,7 @@ void PointCloudRenderer::render(const PointCloud &pointCloud,
 
   // Set label display mode and colors
   shader_->setBool("uShowLabels", component.showLabels);
+  shader_->setBool("uLabelOverride", true);
   if (component.showLabels && component.labelDefinition) {
     // Upload label colors to shader
     const auto &labels = component.labelDefinition->getAllLabels();

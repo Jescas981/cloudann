@@ -16,7 +16,7 @@ public:
     }
 
     void execute(Scene& scene, Camera& camera) override {
-        auto& registry = scene.getRegistry();
+        // auto& registry = scene.getRegistry();
         
         // Check if background settings exist
         // if (!registry.ctx().contains<BackgroundSettings>()) {

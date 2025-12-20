@@ -8,6 +8,7 @@ namespace CloudCore {
 PointCloud::PointCloud()
     : cloud_(new PCLCloudType())
     , boundsDirty_(true)
+    , hasLabels_(false)
 {
     boundsMin_ = Eigen::Vector3f(std::numeric_limits<float>::max(),
                                   std::numeric_limits<float>::max(),

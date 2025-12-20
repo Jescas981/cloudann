@@ -10,7 +10,7 @@ namespace CloudCore {
 // Wrapper class for PCL point clouds with XYZRGB points
 class PointCloud {
 public:
-    using PCLPointType = pcl::PointXYZ;
+    using PCLPointType = pcl::PointXYZL;
     using PCLCloudType = pcl::PointCloud<PCLPointType>;
     using PCLCloudPtr = PCLCloudType::Ptr;
 
@@ -43,8 +43,10 @@ public:
     void transform(const Eigen::Matrix4f& matrix);
 
     // Metadata
-    void setName(const std::string& name) { name_ = name; }
+    inline void setName(const std::string& name) { name_ = name; }
+    inline void setHasLabels(bool hasLabels) { hasLabels_ = hasLabels; }
     const std::string& getName() const { return name_; }
+    bool getHasLabels() const { return hasLabels_; }
 
     // Direct PCL cloud access
     void setCloud(PCLCloudPtr cloud);
@@ -56,6 +58,7 @@ private:
     Eigen::Vector3f boundsMin_;
     Eigen::Vector3f boundsMax_;
     bool boundsDirty_;
+    bool hasLabels_;
 };
 
 } // namespace CloudCore
