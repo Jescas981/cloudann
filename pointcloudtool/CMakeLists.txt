@@ -1,5 +1,7 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.23)
 project(PointCloudTool VERSION 1.0.0 LANGUAGES CXX)
+
+find_package(PCL REQUIRED COMPONENTS common io)
 
 # Option to build against installed CloudCore or local development build
 option(USE_LOCAL_CLOUDCORE "Use local CloudCore build from ../cloudanntool" ON)
@@ -95,9 +97,18 @@ if(STANDALONE_BUNDLE)
     endif()
     
     # On Windows, DLLs should be next to exe
-    if(WIN32)
-        # Install PCL and other DLLs if needed
-        install(FILES  ${PCL_LIBRARIES} DESTINATION ${BUNDLE_DIR})
+    if (WIN32)
+        get_target_property(PCL_COMMON_DLL pcl_common IMPORTED_LOCATION_RELEASE)
+        get_target_property(PCL_IO_DLL     pcl_io     IMPORTED_LOCATION_RELEASE)
+
+        message(STATUS "PCL common DLL: ${PCL_COMMON_DLL}")
+        message(STATUS "PCL io DLL:     ${PCL_IO_DLL}")
+
+        install(FILES
+            ${PCL_COMMON_DLL}
+            ${PCL_IO_DLL}
+            DESTINATION ${BUNDLE_DIR}
+        )
     endif()
     
     # Install README or LICENSE if they exist
