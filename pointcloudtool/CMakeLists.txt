@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.23)
 project(PointCloudTool VERSION 1.0.0 LANGUAGES CXX)
 
-find_package(PCL REQUIRED COMPONENTS common io)
+set(CMAKE_EXPORT_COMPILE_COMANDS ON)
 
 # Option to build against installed CloudCore or local development build
 option(USE_LOCAL_CLOUDCORE "Use local CloudCore build from ../cloudanntool" ON)
@@ -98,6 +98,7 @@ if(STANDALONE_BUNDLE)
     
     # On Windows, DLLs should be next to exe
     if (WIN32)
+        find_package(PCL REQUIRED COMPONENTS common io)
         get_target_property(PCL_COMMON_DLL pcl_common IMPORTED_LOCATION_RELEASE)
         get_target_property(PCL_IO_DLL     pcl_io     IMPORTED_LOCATION_RELEASE)
 

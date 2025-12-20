@@ -1,6 +1,5 @@
 #include "SceneController.h"
 #include "core/Log.h"
-#include "io/PCDLoader.h"
 #include "io/PLYLoader.h"
 #include "io/PointCloudExporter.h"
 #include <filesystem>
@@ -164,9 +163,7 @@ bool SceneController::loadPointCloudFromFile(const std::string& filepath)
 
     CC_CORE_INFO("Loading point cloud from: {}", filepath);
 
-    if (extension == ".pcd") {
-        pointCloud = CloudCore::PCDLoader::load(filepath);
-    } else if (extension == ".ply") {
+    if (extension == ".ply") {
         pointCloud = CloudCore::PLYLoader::load(filepath);
     } else {
         CC_CORE_ERROR("Unsupported file format: {}", extension);
@@ -210,22 +207,33 @@ bool SceneController::savePointCloudToFile(const std::string& objectName, const 
         return false;
     }
 
+    auto cloud = pointCloud->getCloud();
+    // Get labels from component
     // Get labels from component
     auto* comp = object->getComponent();
-    std::vector<uint8_t> labels;
     if (comp && !comp->labels.empty()) {
-        labels = comp->labels;
+        // Ensure label count matches point count
+        if (comp->labels.size() != cloud->points.size()) {
+            CC_ERROR("Label count ({}) doesn't match point count ({})", 
+                            comp->labels.size(), cloud->points.size());
+        } else {
+            // Assign labels to each point
+            for (size_t i = 0; i < cloud->points.size(); ++i) {
+                cloud->points[i].label = comp->labels[i];
+            }
+            CC_ERROR("Assigned {} labels to point cloud", comp->labels.size());
+        }
     }
+
+    // =
 
     CC_CORE_INFO("Saving point cloud '{}' to: {} (format: {})", objectName, filepath, format);
 
     bool success = false;
     if (format == "ply") {
-        success = CloudCore::PointCloudExporter::savePLYWithLabels(filepath, *pointCloud, labels, true);
+        success = CloudCore::PLYLoader::save(filepath, *pointCloud, true);
     } else if (format == "ply_ascii") {
-        success = CloudCore::PointCloudExporter::savePLYWithLabels(filepath, *pointCloud, labels, false);
-    } else if (format == "xyzl") {
-        success = CloudCore::PointCloudExporter::saveXYZL(filepath, *pointCloud, labels);
+        success = CloudCore::PLYLoader::save(filepath, *pointCloud, false);
     } else {
         CC_CORE_ERROR("Unsupported save format: {}", format);
         return false;

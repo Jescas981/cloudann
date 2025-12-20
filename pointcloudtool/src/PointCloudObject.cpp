@@ -208,7 +208,17 @@ void PointCloudObject::initializeLabels()
     }
 
     // Initialize all points as unclassified (label 0)
+    auto cloud = pointCloud_->getCloud();
     comp->labels.resize(numPoints, 0);
+
+    // Assign label to each point in the cloud
+    for (size_t i = 0; i < numPoints; ++i) {
+        comp->labels[i] = cloud->points[i].label;
+        if(comp->labels[i] != 0) {
+        CC_CORE_INFO("Haghaha");
+
+        }
+    }
 
     CC_CORE_INFO("Initialized labels for {} points", numPoints);
 }
