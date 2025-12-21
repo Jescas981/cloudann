@@ -2,12 +2,13 @@
 
 #include <string>
 #include <functional>
+#include <Perceptral/core/Macros.h>
 
 struct GLFWwindow;
 
 namespace Perceptral {
 
-class Window {
+class PC_API Window {
 public:
     Window();
     ~Window();

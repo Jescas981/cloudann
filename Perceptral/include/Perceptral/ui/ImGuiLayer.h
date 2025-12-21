@@ -13,7 +13,7 @@ namespace Perceptral {
  * Handles ImGui initialization, event processing, and rendering.
  * This layer wraps ImGui's GLFW and OpenGL3 backends.
  */
-class ImGuiLayer {
+class PC_API ImGuiLayer {
 public:
     ImGuiLayer();
     ~ImGuiLayer();

@@ -9,13 +9,13 @@
 
 namespace Perceptral {
 
-class PointCloud;
-class Camera;
-class Shader;
-class VertexBuffer;
+class PC_API PointCloud;
+class PC_API Camera;
+class PC_API Shader;
+class PC_API VertexBuffer;
 struct PointCloudComponent;
 
-class PointCloudRenderer {
+class PC_API PointCloudRenderer {
 public:
     PointCloudRenderer();
     ~PointCloudRenderer();

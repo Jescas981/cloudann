@@ -2,6 +2,7 @@
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
+#include <Perceptral/core/Macros.h>
 
 namespace Perceptral {
 
@@ -14,7 +15,7 @@ enum class CameraMovement {
     Down
 };
 
-class Camera {
+class PC_API Camera {
 public:
     Camera();
     ~Camera();

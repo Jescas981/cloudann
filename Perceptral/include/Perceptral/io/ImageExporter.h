@@ -1,13 +1,14 @@
 #pragma once
 
 #include <string>
+#include <Perceptral/core/Macros.h>
 
 namespace Perceptral {
 
 /**
  * @brief Image exporter for screenshots and video recording
  */
-class ImageExporter {
+class PC_API ImageExporter {
 public:
     /**
      * @brief Save the current framebuffer to an image file

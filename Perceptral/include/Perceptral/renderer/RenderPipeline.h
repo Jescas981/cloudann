@@ -7,7 +7,7 @@
 
 namespace Perceptral {
 
-class RenderPipeline {
+class PC_API RenderPipeline {
   std::vector<std::unique_ptr<RenderPass>> m_passes;
   bool m_initialized = false;
 

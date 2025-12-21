@@ -1,6 +1,8 @@
 #pragma once
 #include <Eigen/Core>
 #include <memory>
+#include <Perceptral/core/Macros.h>
+
 
 namespace Perceptral {
 
@@ -18,7 +20,7 @@ enum class PrimitiveType {
 
 
 // Static interface for submitting render commands with state caching
-class Renderer {
+class PC_API Renderer {
 public:
     static void init();
     static void shutdown();

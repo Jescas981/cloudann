@@ -2,12 +2,13 @@
 
 #include <string>
 #include <memory>
+#include <Perceptral/core/Macros.h>
 
 namespace Perceptral {
 
 class PointCloud;
 
-class PLYLoader {
+class PC_API PLYLoader {
 public:
     PLYLoader();
     ~PLYLoader();

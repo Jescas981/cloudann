@@ -3,12 +3,12 @@
 namespace Perceptral {
 
 /**
- * @brief Wrapper class for delta time between frames
+ * @brief Wrapper class PC_API for delta time between frames
  * 
  * Provides convenient conversion between seconds and milliseconds.
  * Can be implicitly converted to float for ease of use.
  */
-class DeltaTime {
+class PC_API DeltaTime {
 public:
     /**
      * @brief Construct a DeltaTime object

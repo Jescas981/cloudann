@@ -3,10 +3,11 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <memory>
+#include <Perceptral/core/Macros.h>
 
 namespace Perceptral {
 
-class Log {
+class PC_API Log {
 public:
     static void init();
     static void shutdown();

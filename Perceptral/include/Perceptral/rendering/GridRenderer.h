@@ -9,7 +9,7 @@ namespace Perceptral {
 
 struct GridSettings {
   // Grid type
-  enum class Type {
+  enum class PC_API Type {
     INFINITE_GRID, // Extends to horizon (most common)
     FINITE_GRID,   // Fixed size grid
     RADIAL_GRID,   // Circular grid
@@ -46,10 +46,10 @@ struct GridSettings {
   bool alwaysVisible = false; // Ignore frustum culling
 };
 
-class Shader;
-class Camera;
+class PC_API Shader;
+class PC_API Camera;
 
-class GridRenderer {
+class PC_API GridRenderer {
 public:
   GridRenderer();
   ~GridRenderer();

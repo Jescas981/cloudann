@@ -5,9 +5,9 @@
 
 namespace Perceptral {
 
-class Camera;
+class PC_API Camera;
 
-class AxisLineRenderer {
+class PC_API AxisLineRenderer {
 public:
     AxisLineRenderer();
     ~AxisLineRenderer();

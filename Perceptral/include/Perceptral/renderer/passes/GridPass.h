@@ -5,9 +5,9 @@
 
 namespace Perceptral {
 
-class Scene;
+class PC_API Scene;
 
-class GridPass : public RenderPass {
+class PC_API GridPass : public RenderPass {
     std::unique_ptr<GridRenderer> m_renderer;
 
 public:

@@ -7,7 +7,7 @@
 
 namespace Perceptral {
 
-class ShaderLibrary {
+class PC_API ShaderLibrary {
 public:
     void add(const std::string& name, const std::shared_ptr<Shader>& shader);
     void add(const std::shared_ptr<Shader>& shader);

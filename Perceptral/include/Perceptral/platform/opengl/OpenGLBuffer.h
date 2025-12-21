@@ -4,7 +4,7 @@
 
 namespace Perceptral {
 
-class OpenGLVertexBuffer : public VertexBuffer {
+class PC_API OpenGLVertexBuffer : public VertexBuffer {
 public:
     OpenGLVertexBuffer(uint32_t size);
     OpenGLVertexBuffer(const void* vertices, uint32_t size);
@@ -26,7 +26,7 @@ private:
     std::size_t size_;
 };
 
-class OpenGLIndexBuffer : public IndexBuffer {
+class PC_API OpenGLIndexBuffer : public IndexBuffer {
 public:
     OpenGLIndexBuffer(const uint32_t* indices, uint32_t count);
     virtual ~OpenGLIndexBuffer();

@@ -4,9 +4,9 @@
 
 namespace Perceptral {
 
-class Scene;
+class PC_API Scene;
 
-class AxisLinePass : public RenderPass {
+class PC_API AxisLinePass : public RenderPass {
     std::unique_ptr<AxisLineRenderer> m_renderer;
 
 public:

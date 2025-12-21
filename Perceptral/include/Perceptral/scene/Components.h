@@ -30,7 +30,7 @@ struct TransformComponent {
 };
 
 // Point cloud coloring modes
-enum class PointCloudColorMode {
+enum class PC_API PointCloudColorMode {
     RGB = 0,        // Use RGB colors from point cloud data
     FlatColor = 1,  // Use a single flat color
     AxisX = 2,      // Color based on X coordinate (gradient)

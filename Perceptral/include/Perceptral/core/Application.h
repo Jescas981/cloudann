@@ -14,10 +14,10 @@
 
 namespace Perceptral {
 
-class Renderer;
+class PC_API Renderer;
 
-// Main application class
-class Application {
+// Main application class PC_API
+class PC_API Application {
 public:
     Application(const std::string& name = "CloudAnnotationApp");
     virtual ~Application();
@@ -27,7 +27,7 @@ public:
     void run();
     void shutdown();
 
-    // Event handling (override in derived class)
+    // Event handling (override in derived class PC_API)
     virtual void onEvent(Event& e);
 
     // Scene management
@@ -75,5 +75,7 @@ private:
     bool running_;
     float lastFrameTime_;
 };
+
+extern Application* createApplication();
 
 } // namespace Perceptral

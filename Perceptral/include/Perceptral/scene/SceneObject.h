@@ -6,10 +6,10 @@
 
 namespace Perceptral {
 
-class Scene;
+class PC_API Scene;
 
-// Base class for all scene objects with lifecycle
-class SceneObject {
+// Base class PC_API for all scene objects with lifecycle
+class PC_API SceneObject {
 public:
     SceneObject(const std::string& name = "SceneObject")
         : name_(name), active_(true) {}
@@ -32,7 +32,7 @@ public:
     Scene* getScene() const { return scene_; }
 
 protected:
-    friend class Scene;
+    friend class PC_API Scene;
     void setScene(Scene* scene) { scene_ = scene; }
 
     std::string name_;

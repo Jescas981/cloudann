@@ -3,11 +3,12 @@
 #include <string>
 #include <memory>
 #include <Eigen/Core>
+#include <Perceptral/core/Macros.h>
 
 namespace Perceptral {
 
 // Abstract Shader interface
-class Shader {
+class PC_API Shader {
 public:
     virtual ~Shader() = default;
 

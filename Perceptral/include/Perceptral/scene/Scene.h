@@ -7,10 +7,10 @@
 
 namespace Perceptral {
 
-class Camera;
+class PC_API Camera;
 
 // Scene using EnTT ECS
-class Scene {
+class PC_API Scene {
 public:
     Scene(const std::string& name = "Scene");
     ~Scene();
@@ -38,7 +38,7 @@ public:
     entt::registry& getRegistry() { return registry_; }
 
 private:
-    friend class Entity;
+    friend class PC_API Entity;
 
     std::string name_;
     entt::registry registry_;

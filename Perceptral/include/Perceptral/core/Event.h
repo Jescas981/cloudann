@@ -7,7 +7,7 @@
 namespace Perceptral {
 
 // Event types
-enum class EventType {
+enum class PC_API EventType {
     None = 0,
     // Window events
     WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
@@ -35,8 +35,8 @@ enum EventCategory {
 #define EVENT_CLASS_CATEGORY(category) \
     virtual int getCategoryFlags() const override { return category; }
 
-// Base Event class
-class Event {
+// Base Event class PC_API
+class PC_API Event {
 public:
     virtual ~Event() = default;
 
@@ -56,7 +56,7 @@ public:
 };
 
 // Window events
-class WindowResizeEvent : public Event {
+class PC_API WindowResizeEvent : public Event {
 public:
     WindowResizeEvent(unsigned int width, unsigned int height)
         : width_(width), height_(height) {}
@@ -71,7 +71,7 @@ private:
     unsigned int width_, height_;
 };
 
-class WindowCloseEvent : public Event {
+class PC_API WindowCloseEvent : public Event {
 public:
     WindowCloseEvent() = default;
 
@@ -80,7 +80,7 @@ public:
 };
 
 // Key events
-class KeyEvent : public Event {
+class PC_API KeyEvent : public Event {
 public:
     KeyCode getKeyCode() const { return keyCode_; }
 
@@ -91,7 +91,7 @@ protected:
     KeyCode keyCode_;
 };
 
-class KeyPressedEvent : public KeyEvent {
+class PC_API KeyPressedEvent : public KeyEvent {
 public:
     KeyPressedEvent(KeyCode keycode, int repeatCount)
         : KeyEvent(keycode), repeatCount_(repeatCount) {}
@@ -104,7 +104,7 @@ private:
     int repeatCount_;
 };
 
-class KeyReleasedEvent : public KeyEvent {
+class PC_API KeyReleasedEvent : public KeyEvent {
 public:
     KeyReleasedEvent(KeyCode keycode) : KeyEvent(keycode) {}
 
@@ -112,7 +112,7 @@ public:
 };
 
 // Mouse events
-class MouseMovedEvent : public Event {
+class PC_API MouseMovedEvent : public Event {
 public:
     MouseMovedEvent(float x, float y) : mouseX_(x), mouseY_(y) {}
 
@@ -126,7 +126,7 @@ private:
     float mouseX_, mouseY_;
 };
 
-class MouseScrolledEvent : public Event {
+class PC_API MouseScrolledEvent : public Event {
 public:
     MouseScrolledEvent(float xOffset, float yOffset)
         : xOffset_(xOffset), yOffset_(yOffset) {}
@@ -141,7 +141,7 @@ private:
     float xOffset_, yOffset_;
 };
 
-class MouseButtonEvent : public Event {
+class PC_API MouseButtonEvent : public Event {
 public:
     MouseButton getMouseButton() const { return button_; }
 
@@ -152,14 +152,14 @@ protected:
     MouseButton button_;
 };
 
-class MouseButtonPressedEvent : public MouseButtonEvent {
+class PC_API MouseButtonPressedEvent : public MouseButtonEvent {
 public:
     MouseButtonPressedEvent(MouseButton button) : MouseButtonEvent(button) {}
 
     EVENT_CLASS_TYPE(MouseButtonPressed)
 };
 
-class MouseButtonReleasedEvent : public MouseButtonEvent {
+class PC_API MouseButtonReleasedEvent : public MouseButtonEvent {
 public:
     MouseButtonReleasedEvent(MouseButton button) : MouseButtonEvent(button) {}
 
@@ -167,7 +167,7 @@ public:
 };
 
 // Event dispatcher
-class EventDispatcher {
+class PC_API EventDispatcher {
 public:
     EventDispatcher(Event& event) : event_(event) {}
 

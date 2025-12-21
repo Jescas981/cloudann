@@ -4,7 +4,7 @@
 
 namespace Perceptral {
 
-class OpenGLVertexArray : public VertexArray {
+class PC_API OpenGLVertexArray : public VertexArray {
 public:
     OpenGLVertexArray();
     virtual ~OpenGLVertexArray();

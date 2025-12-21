@@ -2,8 +2,6 @@
     project(CloudAnnotationCore VERSION 1.0.0 LANGUAGES CXX C)
 
     # Options
-    option(BUILD_EXAMPLES "Build example applications" ON)
-
     add_subdirectory(external)
 
     # Find required packages
@@ -54,7 +52,6 @@
         # I/O
         src/io/PLYLoader.cpp
         src/io/ImageExporter.cpp
-        src/io/PointCloudExporter.cpp
 
         # UI
         src/ui/ImGuiLayer.cpp
@@ -102,7 +99,6 @@
         # I/O
         include/Perceptral/io/PLYLoader.h
         include/Perceptral/io/ImageExporter.h
-        include/Perceptral/io/PointCloudExporter.h
 
         # UI
         include/Perceptral/ui/ImGuiLayer.h

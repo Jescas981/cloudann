@@ -7,7 +7,7 @@
 namespace Perceptral {
 
 // Vertex Array Object abstraction
-class VertexArray {
+class PC_API VertexArray {
 public:
     virtual ~VertexArray() = default;
 

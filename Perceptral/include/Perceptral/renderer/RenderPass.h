@@ -2,9 +2,9 @@
 #include <Perceptral/scene/Scene.h>
 
 namespace Perceptral {
-class Camera;
+class PC_API Camera;
 
-class RenderPass {
+class PC_API RenderPass {
 public:
     virtual ~RenderPass() = default;
     virtual void initialize() {}

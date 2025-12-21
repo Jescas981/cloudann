@@ -6,7 +6,7 @@
 
 namespace Perceptral {
 
-class OpenGLShader : public Shader {
+class PC_API OpenGLShader : public Shader {
 public:
     OpenGLShader(const std::string& filepath);
     OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);

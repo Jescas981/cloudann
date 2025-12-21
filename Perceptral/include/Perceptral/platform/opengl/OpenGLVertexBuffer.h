@@ -11,7 +11,7 @@ namespace Perceptral {
 
 namespace Perceptral {
 
-class OpenGLVertexBuffer {
+class PC_API OpenGLVertexBuffer {
 public:
   OpenGLVertexBuffer();
   ~OpenGLVertexBuffer();

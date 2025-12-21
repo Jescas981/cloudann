@@ -1,6 +1,7 @@
 #pragma once
 
 #include <entt/entt.hpp>
+#include <Perceptral/core/Macros.h>
 
 namespace Perceptral {
 
@@ -14,7 +15,7 @@ class Scene;
  *
  * TODO: Consider hiding EnTT from public API in future version using Pimpl pattern.
  */
-class Entity {
+class PC_API Entity {
 public:
     Entity() = default;
     Entity(entt::entity handle, Scene* scene);
@@ -55,7 +56,7 @@ private:
     entt::entity entityHandle_{ entt::null };
     Scene* scene_ = nullptr;
 
-    friend class Scene;
+    friend class PC_API Scene;
 };
 
 } // namespace Perceptral

@@ -3,7 +3,7 @@
 #include <Perceptral/renderer/RenderAPI.h>
 
 namespace Perceptral {
-class OpenGLRenderAPI : public RenderAPI {
+class PC_API OpenGLRenderAPI : public RenderAPI {
 public:
     virtual void init() override;
     virtual void shutdown() override;

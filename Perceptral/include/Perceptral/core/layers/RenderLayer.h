@@ -15,7 +15,7 @@ namespace Perceptral {
  * Owns and manages the RenderPipeline, executing all render passes
  * to visualize the scene with the given camera.
  */
-class RenderLayer : public Layer {
+class PC_API RenderLayer : public Layer {
 public:
     RenderLayer(Scene& scene, Camera& camera);
     virtual ~RenderLayer() = default;

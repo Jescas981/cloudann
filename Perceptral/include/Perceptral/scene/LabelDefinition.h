@@ -4,11 +4,12 @@
 #include <vector>
 #include <map>
 #include <Eigen/Core>
+#include <Perceptral/core/Macros.h>
 
 namespace Perceptral {
 
 /**
- * @brief Defines a single label class for point cloud annotation
+ * @brief Defines a single label class PC_API for point cloud annotation
  */
 struct LabelClass {
     uint8_t id;                      // Unique identifier (0-255)
@@ -24,7 +25,7 @@ struct LabelClass {
 /**
  * @brief Manages label definitions for point cloud classification
  */
-class LabelDefinition {
+class PC_API LabelDefinition {
 public:
     LabelDefinition();
     ~LabelDefinition() = default;

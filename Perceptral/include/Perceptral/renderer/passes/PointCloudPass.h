@@ -5,7 +5,7 @@
 
 namespace Perceptral {
 
-class PointCloudPass : public RenderPass {
+class PC_API PointCloudPass : public RenderPass {
     std::unique_ptr<PointCloudRenderer> m_renderer;
 
 public:

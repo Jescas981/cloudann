@@ -4,11 +4,12 @@
 #include <pcl/point_types.h>
 #include <string>
 #include <Eigen/Core>
+#include <Perceptral/core/Macros.h>
 
 namespace Perceptral {
 
-// Wrapper class for PCL point clouds with XYZRGB points
-class PointCloud {
+// Wrapper class PC_API for PCL point clouds with XYZRGB points
+class PC_API PointCloud {
 public:
     using PCLPointType = pcl::PointXYZL;
     using PCLCloudType = pcl::PointCloud<PCLPointType>;

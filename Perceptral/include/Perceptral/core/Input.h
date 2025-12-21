@@ -6,7 +6,7 @@
 namespace Perceptral {
 
 // Static Input interface - platform independent
-class Input {
+class PC_API Input {
 public:
     // Keyboard
     static bool isKeyPressed(KeyCode key);

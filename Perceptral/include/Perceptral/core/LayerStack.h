@@ -5,7 +5,7 @@
 
 namespace Perceptral {
 
-class LayerStack {
+class PC_API LayerStack {
 public:
     LayerStack() = default;
     ~LayerStack() = default;
@@ -20,7 +20,7 @@ public:
     size_t size() const { return m_layers.size(); }
     
     // Iterator wrapper that returns Layer* instead of unique_ptr<Layer>&
-    class Iterator {
+    class PC_API Iterator {
         std::vector<std::unique_ptr<Layer>>::iterator it;
     public:
         Iterator(std::vector<std::unique_ptr<Layer>>::iterator i) : it(i) {}
@@ -29,7 +29,7 @@ public:
         bool operator!=(const Iterator& other) const { return it != other.it; }
     };
     
-    class ReverseIterator {
+    class PC_API ReverseIterator {
         std::vector<std::unique_ptr<Layer>>::reverse_iterator it;
     public:
         ReverseIterator(std::vector<std::unique_ptr<Layer>>::reverse_iterator i) : it(i) {}

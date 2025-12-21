@@ -9,7 +9,7 @@ struct GLFWwindow;
 
 namespace Perceptral {
 
-class EventManager {
+class PC_API EventManager {
 public:
     EventManager();
     ~EventManager();

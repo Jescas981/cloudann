@@ -6,12 +6,12 @@
 
 namespace Perceptral {
 
-class VertexArray;
+class PC_API VertexArray;
 
 // Abstract rendering API interface
-class RenderAPI {
+class PC_API RenderAPI {
 public:
-    enum class API {
+    enum class PC_API API {
         None = 0,
         OpenGL = 1,
         Vulkan = 2,

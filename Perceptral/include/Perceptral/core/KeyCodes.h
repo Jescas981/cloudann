@@ -1,4 +1,5 @@
 #pragma once
+#include <Perceptral/core/Macros.h>
 
 namespace Perceptral {
 
@@ -77,7 +78,7 @@ enum class KeyCode {
 };
 
 // Mouse button codes
-enum class MouseButton {
+enum class PC_API MouseButton {
     Left = 0,
     Right = 1,
     Middle = 2,

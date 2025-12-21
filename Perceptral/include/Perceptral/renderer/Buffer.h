@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <Perceptral/core/Macros.h>
 
 namespace Perceptral {
 
@@ -36,7 +37,7 @@ struct BufferElement {
 };
 
 // Buffer layout (describes vertex structure)
-class BufferLayout {
+class PC_API BufferLayout {
 public:
     BufferLayout() = default;
     BufferLayout(const std::initializer_list<BufferElement>& elements);
@@ -57,7 +58,7 @@ private:
 };
 
 // Vertex Buffer
-class VertexBuffer {
+class PC_API VertexBuffer {
 public:
     virtual ~VertexBuffer() = default;
 
@@ -75,7 +76,7 @@ public:
 };
 
 // Index Buffer
-class IndexBuffer {
+class PC_API IndexBuffer {
 public:
     virtual ~IndexBuffer() = default;
 

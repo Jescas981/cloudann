@@ -6,6 +6,7 @@
 #include <Perceptral/core/layers/RenderLayer.h>
 #include <Perceptral/io/ImageExporter.h>
 #include <Perceptral/scene/Scene.h>
+#include <Perceptral/Entrypoint.h>
 
 #include "CameraController.h"
 #include "SceneController.h"
@@ -316,12 +317,6 @@ private:
   bool verboseLogging_ = false;
 };
 
-int main(int argc, char **argv) {
-  PointCloudToolApp app;
-
-  if (app.initialize(1280, 720)) {
-    app.run();
-  }
-
-  return 0;
+Perceptral::Application* Perceptral::createApplication() {
+    return new PointCloudToolApp();
 }

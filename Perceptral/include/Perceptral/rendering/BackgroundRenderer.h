@@ -16,7 +16,7 @@ struct BackgroundSettings {
   Eigen::Vector4f clearColor = {0.1f, 0.1f, 0.1f, 1.0f};
 
   // Rendering mode
-  enum class Mode {
+  enum class PC_API Mode {
     SOLID_COLOR,
     GRADIENT,
   } mode = Mode::GRADIENT;
@@ -25,9 +25,9 @@ struct BackgroundSettings {
   bool enabled = true;
 };
 
-class Shader;
+class PC_API Shader;
 
-class BackgroundRenderer {
+class PC_API BackgroundRenderer {
 public:
   BackgroundRenderer();
   ~BackgroundRenderer();

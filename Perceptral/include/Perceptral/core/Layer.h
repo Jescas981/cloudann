@@ -6,7 +6,7 @@
 
 // core/Layer.h
 namespace Perceptral {
-class Layer {
+class PC_API Layer {
 public:
   Layer(const std::string &name = "Layer") : m_debugName(name) {}
   virtual ~Layer() = default;
