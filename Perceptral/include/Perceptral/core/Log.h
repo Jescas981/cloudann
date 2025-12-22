@@ -34,12 +34,14 @@ private:
 } // namespace Perceptral
 
 // Core logging macros
+#ifdef PC_ENGINE_INTERNAL
 #define PC_CORE_TRACE(...)    ::Perceptral::Log::getCoreLogger()->trace(__VA_ARGS__)
 #define PC_CORE_DEBUG(...)    ::Perceptral::Log::getCoreLogger()->debug(__VA_ARGS__)
 #define PC_CORE_INFO(...)     ::Perceptral::Log::getCoreLogger()->info(__VA_ARGS__)
 #define PC_CORE_WARN(...)     ::Perceptral::Log::getCoreLogger()->warn(__VA_ARGS__)
 #define PC_CORE_ERROR(...)    ::Perceptral::Log::getCoreLogger()->error(__VA_ARGS__)
 #define PC_CORE_CRITICAL(...) ::Perceptral::Log::getCoreLogger()->critical(__VA_ARGS__)
+#endif
 
 #define PC_TRACE(...)    ::Perceptral::Log::getLogger()->trace(__VA_ARGS__)
 #define PC_DEBUG(...)    ::Perceptral::Log::getLogger()->debug(__VA_ARGS__)

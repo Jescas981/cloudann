@@ -10,7 +10,7 @@ PointCloudObject::PointCloudObject(const std::string& name, std::shared_ptr<Perc
     : name_(name)
     , pointCloud_(pointCloud)
 {
-    PC_CORE_INFO("Created PointCloudObject: {}", name_);
+    PC_INFO("Created PointCloudObject: {}", name_);
 }
 
 void PointCloudObject::onCreate(Perceptral::Entity entity)
@@ -27,7 +27,7 @@ void PointCloudObject::onCreate(Perceptral::Entity entity)
     // Initialize color buffers
     initializeColors();
 
-    PC_CORE_INFO("PointCloudObject '{}' created with {} points", name_, pointCloud_->size());
+    PC_INFO("PointCloudObject '{}' created with {} points", name_, pointCloud_->size());
 }
 
 void PointCloudObject::onUpdate(Perceptral::DeltaTime deltaTime)
@@ -39,7 +39,7 @@ void PointCloudObject::onUpdate(Perceptral::DeltaTime deltaTime)
 
 void PointCloudObject::onDestroy()
 {
-    PC_CORE_INFO("Destroying PointCloudObject: {}", name_);
+    PC_INFO("Destroying PointCloudObject: {}", name_);
     // Cleanup logic if needed
 }
 
@@ -137,7 +137,7 @@ void PointCloudObject::selectPoints(const std::vector<size_t>& indices, bool add
     // Update selection mask
     updatePointColors();
 
-    PC_CORE_INFO("Object '{}': {} points selected (total: {})",
+    PC_INFO("Object '{}': {} points selected (total: {})",
                  name_, indices.size(), selectedPoints_.size());
 }
 
@@ -154,7 +154,7 @@ void PointCloudObject::deselectPoints(const std::vector<size_t>& indices)
     // Update selection mask
     updatePointColors();
 
-    PC_CORE_INFO("Object '{}': {} points deselected (remaining: {})",
+    PC_INFO("Object '{}': {} points deselected (remaining: {})",
                  name_, indices.size(), selectedPoints_.size());
 }
 
@@ -167,7 +167,7 @@ void PointCloudObject::clearSelection()
         std::fill(comp->selectionMask.begin(), comp->selectionMask.end(), 0);
     }
 
-    PC_CORE_INFO("Object '{}': Selection cleared", name_);
+    PC_INFO("Object '{}': Selection cleared", name_);
 }
 
 void PointCloudObject::initializeColors()
@@ -191,7 +191,7 @@ void PointCloudObject::initializeColors()
     // Initialize labels
     initializeLabels();
 
-    PC_CORE_INFO("Initialized color buffers for {} points", numPoints);
+    PC_INFO("Initialized color buffers for {} points", numPoints);
 }
 
 void PointCloudObject::initializeLabels()
@@ -207,7 +207,7 @@ void PointCloudObject::initializeLabels()
     if (!comp->labelDefinition) {
         comp->labelDefinition = std::make_shared<Perceptral::LabelDefinition>();
         comp->labelDefinition->loadDefaultLabels();
-        PC_CORE_INFO("Created default label definition for '{}'", name_);
+        PC_INFO("Created default label definition for '{}'", name_);
     }
 
     // Initialize all points as unclassified (label 0)
@@ -218,19 +218,19 @@ void PointCloudObject::initializeLabels()
     for (size_t i = 0; i < numPoints; ++i) {
         comp->labels[i] = cloud->points[i].label;
         if(comp->labels[i] != 0) {
-        PC_CORE_INFO("Haghaha");
+        PC_INFO("Haghaha");
 
         }
     }
 
-    PC_CORE_INFO("Initialized labels for {} points", numPoints);
+    PC_INFO("Initialized labels for {} points", numPoints);
 }
 
 void PointCloudObject::assignLabelToSelected(uint8_t labelId, bool overwrite)
 {
     auto* comp = getComponent();
     if (!comp || selectedPoints_.empty()) {
-        PC_CORE_WARN("Cannot assign label: no component or no selected points");
+        PC_WARN("Cannot assign label: no component or no selected points");
         return;
     }
 
@@ -263,10 +263,10 @@ void PointCloudObject::assignLabelToSelected(uint8_t labelId, bool overwrite)
     }
 
     if (!overwrite && skippedCount > 0) {
-        PC_CORE_INFO("Assigned label {} ({}) to {} points, skipped {} points with existing labels",
+        PC_INFO("Assigned label {} ({}) to {} points, skipped {} points with existing labels",
                      labelId, labelName, assignedCount, skippedCount);
     } else {
-        PC_CORE_INFO("Assigned label {} ({}) to {} selected points",
+        PC_INFO("Assigned label {} ({}) to {} selected points",
                      labelId, labelName, assignedCount);
     }
 }
@@ -302,7 +302,7 @@ void PointCloudObject::updatePointColors()
             }
         }
 
-        PC_CORE_TRACE("Updated selection mask: {} selected points", selectedPoints_.size());
+        PC_TRACE("Updated selection mask: {} selected points", selectedPoints_.size());
     }
 
     // Mark that we have color data
@@ -333,7 +333,7 @@ void PointCloudObject::hideLabel(uint8_t labelId)
         }
     }
 
-    PC_CORE_INFO("Hidden label {} - {} points hidden", labelId, hiddenCount);
+    PC_INFO("Hidden label {} - {} points hidden", labelId, hiddenCount);
 }
 
 void PointCloudObject::showSelection()
@@ -360,7 +360,7 @@ void PointCloudObject::showSelection()
         }
     }
     
-    PC_CORE_INFO("showSelection: {} points visible out of {}", 
+    PC_INFO("showSelection: {} points visible out of {}", 
                  selectedPoints_.size(), numPoints);
 }
 
@@ -387,7 +387,7 @@ void PointCloudObject::showLabel(uint8_t labelId)
         }
     }
 
-    PC_CORE_INFO("Shown label {} - {} points shown", labelId, shownCount);
+    PC_INFO("Shown label {} - {} points shown", labelId, shownCount);
 }
 
 void PointCloudObject::showAllLabels()
@@ -402,7 +402,7 @@ void PointCloudObject::showAllLabels()
     size_t numPoints = pointCloud_->size();
     comp->visibilityMask.assign(numPoints, 1);
 
-    PC_CORE_INFO("All labels shown - {} points visible", numPoints);
+    PC_INFO("All labels shown - {} points visible", numPoints);
 }
 
 void PointCloudObject::hideAllExceptLabel(uint8_t labelId)
@@ -439,7 +439,7 @@ void PointCloudObject::hideAllExceptLabel(uint8_t labelId)
         }
     }
 
-    PC_CORE_INFO("Showing only label {} - {} points visible", labelId, visibleCount);
+    PC_INFO("Showing only label {} - {} points visible", labelId, visibleCount);
 }
 
 bool PointCloudObject::isLabelHidden(uint8_t labelId) const

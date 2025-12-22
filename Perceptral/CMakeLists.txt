@@ -34,6 +34,7 @@
         src/renderer/VertexArray.cpp
         src/renderer/Shader.cpp
         src/renderer/ShaderLibrary.cpp
+        src/renderer/RenderPipeline.cpp
 
         # OpenGL Platform
         src/platform/opengl/OpenGLRenderAPI.cpp
@@ -44,10 +45,10 @@
         # Scene (EnTT ECS)
         src/scene/Scene.cpp
         src/scene/Entity.cpp
-        src/scene/Components.cpp
         src/scene/SceneManager.cpp
         src/scene/PointCloud.cpp
         src/scene/LabelDefinition.cpp
+        src/scene/components/Transform.cpp
 
         # I/O
         src/io/PLYLoader.cpp
@@ -81,6 +82,7 @@
         include/Perceptral/renderer/ShaderLibrary.h
         include/Perceptral/renderer/Buffer.h
         include/Perceptral/renderer/VertexArray.h
+        include/Perceptral/renderer/RenderPipeline.h
 
         # OpenGL Platform
         include/Perceptral/platform/opengl/OpenGLRenderAPI.h
@@ -126,9 +128,9 @@
 
 
     # Create core library
-    add_library(cloudanncore STATIC ${CORE_SOURCES} ${CORE_HEADERS} ${IMGUI_SOURCES} ${IMGUI_HEADERS})
+    add_library(perceptral STATIC ${CORE_SOURCES} ${CORE_HEADERS} ${IMGUI_SOURCES} ${IMGUI_HEADERS})
 
-    target_include_directories(cloudanncore
+    target_include_directories(perceptral
         PUBLIC
             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
             $<INSTALL_INTERFACE:include>
@@ -136,7 +138,7 @@
             ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
 
-    target_link_libraries(cloudanncore
+    target_link_libraries(perceptral
         PUBLIC
             pcl_common
             pcl_io
@@ -148,7 +150,7 @@
             glad
     )
 
-    target_include_directories(cloudanncore
+    target_include_directories(perceptral
         PUBLIC
             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/imgui>
             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/imgui/backends>
@@ -156,15 +158,17 @@
             $<INSTALL_INTERFACE:include/imgui/backends>
     )
 
+    target_compile_definitions(perceptral PRIVATE PC_ENGINE_INTERNAL)
+
     # Compiler warnings
     if(MSVC)
-        target_compile_options(cloudanncore PRIVATE /W4)
+        target_compile_options(perceptral PRIVATE /W4)
     else()
-        target_compile_options(cloudanncore PRIVATE -Wall -Wextra -Wpedantic)
+        target_compile_options(perceptral PRIVATE -Wall -Wextra -Wpedantic)
     endif()
 
     # Installation
-    install(TARGETS cloudanncore glad glfw EnTT spdlog_header_only happly
+    install(TARGETS perceptral glad glfw EnTT spdlog_header_only happly
         EXPORT CloudAnnotationCoreTargets
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
@@ -173,7 +177,7 @@
     )
 
     install(DIRECTORY include/ DESTINATION include)
-    install(DIRECTORY shaders/ DESTINATION share/cloudanncore/shaders)
+    install(DIRECTORY shaders/ DESTINATION share/perceptral/shaders)
 
     # Install external dependencies headers that are needed
     install(DIRECTORY external/imgui/ DESTINATION include/imgui

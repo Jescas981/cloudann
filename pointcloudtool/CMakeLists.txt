@@ -11,12 +11,12 @@ if(USE_LOCAL_CLOUDCORE)
     message(STATUS "Using local CloudCore from ../Perceptral")
     # Add Perceptral as subdirectory for development
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../Perceptral ${CMAKE_BINARY_DIR}/cloudcore)
-    set(CLOUDCORE_LIB cloudanncore)
+    set(CLOUDCORE_LIB perceptral)
 else()
     message(STATUS "Looking for installed CloudAnnotationCore package")
     # Find installed CloudCore library
     find_package(CloudAnnotationCore REQUIRED)
-    set(CLOUDCORE_LIB CloudAnnotationCore::cloudanncore)
+    set(CLOUDCORE_LIB CloudAnnotationCore::perceptral)
 endif()
 
 # Point Cloud Tool sources
@@ -76,7 +76,7 @@ if(STANDALONE_BUNDLE)
         )
     else()
         # Copy from installed CloudCore location
-        install(DIRECTORY ${CMAKE_INSTALL_PREFIX}/share/cloudanncore/shaders/
+        install(DIRECTORY ${CMAKE_INSTALL_PREFIX}/share/perceptral/shaders/
             DESTINATION ${BUNDLE_DIR}/shaders
             FILES_MATCHING PATTERN "*.glsl"
         )
@@ -91,7 +91,7 @@ if(STANDALONE_BUNDLE)
     
     # Install shared libraries (for Linux/macOS)
     if(UNIX AND NOT APPLE)
-        install(FILES $<TARGET_FILE:cloudanncore>
+        install(FILES $<TARGET_FILE:perceptral>
             DESTINATION ${BUNDLE_DIR}/lib
         )
     endif()
@@ -134,7 +134,7 @@ else()
     # Install CloudCore shaders to their own location
     if(USE_LOCAL_CLOUDCORE)
         install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../Perceptral/shaders/
-            DESTINATION share/cloudanncore/shaders
+            DESTINATION share/perceptral/shaders
             FILES_MATCHING PATTERN "*.glsl"
         )
     endif()

@@ -24,8 +24,6 @@ Application::~Application() {
 }
 
 bool Application::initialize(int width, int height) {
-    // Initialize logger first
-    Log::init();
     PC_CORE_INFO("Initializing Application: {}", name_);
 
     Time::initialize();
@@ -58,8 +56,8 @@ bool Application::initialize(int width, int height) {
 
     // Create camera
     camera_ = std::make_unique<Camera>();
-    camera_->setPosition(Eigen::Vector3f(0.0f, -5.0f, 0.0f));
-    camera_->setTarget(Eigen::Vector3f(0.0f, 0.0f, 0.0f));
+    // camera_->setPosition(Eigen::Vector3f(0.0f, -5.0f, 0.0f));
+    // camera_->setTarget(Eigen::Vector3f(0.0f, 0.0f, 0.0f));
     camera_->setPerspective(45.0f, static_cast<float>(width) / height, 0.1f, 1000.0f);
     PC_CORE_DEBUG("Camera initialized");
 

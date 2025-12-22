@@ -4,8 +4,8 @@
 
 #include <Perceptral/renderer/Buffer.h>
 #include <Perceptral/renderer/VertexArray.h>
-#include <Perceptral/scene/Components.h>
-#include <Perceptral/scene/PointCloud.h>
+#include <Perceptral/scene/components/PointCloud.h>
+#include <Perceptral/resources/PointCloud.h>
 #include <glad/glad.h>
 
 namespace Perceptral {
@@ -28,8 +28,8 @@ bool PointCloudRenderer::initialize() {
   return true;
 }
 
-void PointCloudRenderer::render(const PointCloud &pointCloud,
-                                const PointCloudComponent &component,
+void PointCloudRenderer::render(const Resource::PointCloud &pointCloud,
+                                const Component::PointCloud &component,
                                 const Camera &camera) {
   if (pointCloud.empty()) {
     return;
@@ -120,8 +120,8 @@ void PointCloudRenderer::render(const PointCloud &pointCloud,
   vertexArray_->unbind();
 }
 
-void PointCloudRenderer::updateBuffers(const PointCloud &pointCloud,
-                                       const PointCloudComponent &component) {
+void PointCloudRenderer::updateBuffers(const Resource::PointCloud &pointCloud,
+                                       const Component::PointCloud &component) {
   auto cloud = pointCloud.getCloud();
 
   // Prepare vertex data: position (vec3) + color (vec3) + selectionMask (float)

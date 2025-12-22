@@ -18,7 +18,7 @@ void SelectionTool::startSelection(float x, float y)
         lassoPath_.push_back(Eigen::Vector2f(x, y));
     }
 
-    PC_CORE_TRACE("Selection started at ({}, {})", x, y);
+    PC_TRACE("Selection started at ({}, {})", x, y);
 }
 
 void SelectionTool::updateSelection(float x, float y)
@@ -53,14 +53,14 @@ void SelectionTool::endSelection()
         }
     }
 
-    PC_CORE_TRACE("Selection ended at ({}, {})", currentX_, currentY_);
+    PC_TRACE("Selection ended at ({}, {})", currentX_, currentY_);
 }
 
 void SelectionTool::cancelSelection()
 {
     isSelecting_ = false;
     lassoPath_.clear();
-    PC_CORE_TRACE("Selection cancelled");
+    PC_TRACE("Selection cancelled");
 }
 
 void SelectionTool::getSelectionRect(float& x1, float& y1, float& x2, float& y2) const
@@ -95,7 +95,7 @@ std::vector<size_t> SelectionTool::selectPoints(
 
         // Ensure minimum rectangle size (avoid accidental clicks)
         if (std::abs(x2 - x1) < 5.0f || std::abs(y2 - y1) < 5.0f) {
-            PC_CORE_TRACE("Selection rectangle too small, ignoring");
+            PC_TRACE("Selection rectangle too small, ignoring");
             return selectedIndices;
         }
 
@@ -111,7 +111,7 @@ std::vector<size_t> SelectionTool::selectPoints(
     } else {
         // Lasso selection
         if (lassoPath_.size() < 3) {
-            PC_CORE_TRACE("Lasso path too small, ignoring");
+            PC_TRACE("Lasso path too small, ignoring");
             return selectedIndices;
         }
 
@@ -126,7 +126,7 @@ std::vector<size_t> SelectionTool::selectPoints(
         }
     }
 
-    PC_CORE_INFO("{} selection: {} points out of {}",
+    PC_INFO("{} selection: {} points out of {}",
                  (selectionMode_ == SelectionMode::Rectangle ? "Rectangle" : "Lasso"),
                  selectedIndices.size(), cloud->size());
     return selectedIndices;

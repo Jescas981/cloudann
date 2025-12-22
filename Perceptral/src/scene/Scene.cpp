@@ -1,6 +1,7 @@
 #include <Perceptral/scene/Scene.h>
+#include <Perceptral/scene/components/Transform.h>
+#include <Perceptral/scene/components/Tag.h>
 #include <Perceptral/core/DeltaTime.h>
-#include <Perceptral/scene/Components.h>
 #include <Perceptral/rendering/BackgroundRenderer.h>
 #include <Perceptral/core/Macros.h>
 
@@ -31,8 +32,8 @@ void Scene::onRender() {
 
 Entity Scene::createEntity(const std::string& name) {
     Entity entity = { registry_.create(), this };
-    entity.addComponent<TagComponent>(name);
-    entity.addComponent<TransformComponent>();
+    entity.addComponent<Component::Tag>(name);
+    entity.addComponent<Component::Transform>();
     return entity;
 }
 
@@ -45,9 +46,9 @@ void Scene::clear() {
 }
 
 Entity Scene::findEntityByName(const std::string& name) {
-    auto view = registry_.view<TagComponent>();
+    auto view = registry_.view<Component::Tag>();
     for (auto entity : view) {
-        const TagComponent& tag = view.get<TagComponent>(entity);
+        const Component::Tag& tag = view.get<Component::Tag>(entity);
         if (tag.tag == name) {
             return { entity, this };
         }

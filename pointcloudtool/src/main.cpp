@@ -51,7 +51,7 @@ public:
 
     // Initialize NFD (must be after window creation)
     if (NFD_Init() != NFD_OKAY) {
-      PC_CORE_ERROR("Failed to initialize NFD: {}", NFD_GetError());
+      PC_ERROR("Failed to initialize NFD: {}", NFD_GetError());
       stop();
       return;
     }

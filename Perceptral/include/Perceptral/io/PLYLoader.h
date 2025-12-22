@@ -6,7 +6,10 @@
 
 namespace Perceptral {
 
+namespace Resource {
 class PointCloud;
+};
+
 
 class PC_API PLYLoader {
 public:
@@ -14,14 +17,14 @@ public:
     ~PLYLoader();
 
     // Load PLY file
-    static std::unique_ptr<PointCloud> load(const std::string& filepath);
+    static std::unique_ptr<Resource::PointCloud> load(const std::string& filepath);
 
     // Save PLY file
-    static bool save(const std::string& filepath, const PointCloud& pointCloud, bool binary = true);
+    static bool save(const std::string& filepath, const Resource::PointCloud& pointcloud, bool binary = true);
 
 private:
-    static std::unique_ptr<PointCloud> loadASCII(const std::string& filepath, size_t vertexCount);
-    static std::unique_ptr<PointCloud> loadBinary(const std::string& filepath, size_t vertexCount, bool bigEndian);
+    static std::unique_ptr<Resource::PointCloud> loadASCII(const std::string& filepath, size_t vertexCount);
+    static std::unique_ptr<Resource::PointCloud> loadBinary(const std::string& filepath, size_t vertexCount, bool bigEndian);
 };
 
 } // namespace Perceptral

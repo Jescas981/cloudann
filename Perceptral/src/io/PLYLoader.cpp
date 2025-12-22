@@ -1,5 +1,6 @@
+#include <Perceptral/resources/PointCloud.h>
 #include <Perceptral/io/PLYLoader.h>
-#include <Perceptral/scene/PointCloud.h>
+#include <Perceptral/resources/PointCloud.h>
 #include <happly.h>
 #include <Perceptral/core/Log.h>
 
@@ -13,7 +14,7 @@ PLYLoader::~PLYLoader()
 {
 }
 
-std::unique_ptr<PointCloud> PLYLoader::load(const std::string& filepath)
+std::unique_ptr<Resource::PointCloud> PLYLoader::load(const std::string& filepath)
 {
     try {
         // Load PLY file
@@ -52,7 +53,7 @@ std::unique_ptr<PointCloud> PLYLoader::load(const std::string& filepath)
             cloud->points[i].label = hasLabels ? labels[i] : 0;
         }
         
-        auto pointCloud = std::make_unique<PointCloud>(cloud);
+        auto pointCloud = std::make_unique<Resource::PointCloud>(cloud);
         pointCloud->setName(filepath);
         pointCloud->computeBounds();
         pointCloud->setHasLabels(hasLabels);
@@ -66,7 +67,7 @@ std::unique_ptr<PointCloud> PLYLoader::load(const std::string& filepath)
     }
 }
 
-bool PLYLoader::save(const std::string& filepath, const PointCloud& pointCloud, bool binary)
+bool PLYLoader::save(const std::string& filepath, const Resource::PointCloud& pointCloud, bool binary)
 {
     try {
         auto cloud = pointCloud.getCloud();
