@@ -239,10 +239,6 @@ void PointCloudObject::initializeLabels()
     // Assign label to each point in the cloud
     for (size_t i = 0; i < numPoints; ++i) {
         comp->labels[i] = cloud->points[i].label;
-        if(comp->labels[i] != 0) {
-        PC_CORE_INFO("Haghaha");
-
-        }
     }
 
     PC_CORE_INFO("Initialized labels for {} points", numPoints);
