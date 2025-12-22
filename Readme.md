@@ -39,7 +39,7 @@ A lightweight engine for rendering and visualizing point clouds with customizabl
 ![Point Cloud Rendering](docs/Photo.png)  
 
 ## Tutorial
-[![Point Cloud Tool](https://img.youtube.com/vi/KtLUAVpZ7DA/hqdefault.jpg)](https://youtu.be/KtLUAVpZ7DA)
+[![Point Cloud Tool](https://img.youtube.com/vi/x3B5sUdEKyc/hqdefault.jpg)](https://youtu.be/x3B5sUdEKyc)
 
 ## Supported Color Modes
 
