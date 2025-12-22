@@ -274,10 +274,10 @@ private:
         }
       }
 
-      PC_INFO(
+      /*PC_INFO(
           "FPS: {:.1f} | Objects: {} | Points: {} | Camera Distance: {:.2f}",
           avgFps, sceneController_->getObjectCount(), totalPoints,
-          getCamera()->getOrbitDistance());
+          getCamera()->getOrbitDistance());*/
 
       accumulatedTime = 0.0;
       frameCount = 0;

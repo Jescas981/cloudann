@@ -126,8 +126,30 @@ void PointCloudObject::selectPoints(const std::vector<size_t>& indices, bool add
     }
 
     // Add new selections (avoid duplicates)
+    /*for (size_t idx : indices) {
+        if (idx < getPointCount()) {
+            if (std::find(selectedPoints_.begin(), selectedPoints_.end(), idx) == selectedPoints_.end()) {
+                selectedPoints_.push_back(idx);
+            }
+        }
+    }*/
+
+    auto* comp = getComponent();
+    if (!comp) return;
+
+    // Add new selections (avoid duplicates and check visibility)
+    size_t skippedCount = 0;
     for (size_t idx : indices) {
         if (idx < getPointCount()) {
+            // Check if point is visible before allowing selection
+            if (!comp->visibilityMask.empty() && idx < comp->visibilityMask.size()) {
+                if (comp->visibilityMask[idx] == 0) {
+                    skippedCount++;
+                    continue; // Skip hidden points
+                }
+            }
+            
+            // Avoid duplicates
             if (std::find(selectedPoints_.begin(), selectedPoints_.end(), idx) == selectedPoints_.end()) {
                 selectedPoints_.push_back(idx);
             }
@@ -302,7 +324,7 @@ void PointCloudObject::updatePointColors()
             }
         }
 
-        PC_CORE_TRACE("Updated selection mask: {} selected points", selectedPoints_.size());
+        PC_TRACE("Updated selection mask: {} selected points", selectedPoints_.size());
     }
 
     // Mark that we have color data
@@ -333,7 +355,7 @@ void PointCloudObject::hideLabel(uint8_t labelId)
         }
     }
 
-    PC_CORE_INFO("Hidden label {} - {} points hidden", labelId, hiddenCount);
+    PC_INFO("Hidden label {} - {} points hidden", labelId, hiddenCount);
 }
 
 void PointCloudObject::showSelection()
@@ -360,7 +382,7 @@ void PointCloudObject::showSelection()
         }
     }
     
-    PC_CORE_INFO("showSelection: {} points visible out of {}", 
+    PC_INFO("showSelection: {} points visible out of {}", 
                  selectedPoints_.size(), numPoints);
 }
 

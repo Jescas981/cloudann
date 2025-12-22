@@ -1,7 +1,6 @@
 #include "SceneController.h"
 #include <Perceptral/core/Log.h>
 #include <Perceptral/io/PLYLoader.h>
-#include <Perceptral/io/PointCloudExporter.h>
 #include <filesystem>
 
 namespace PointCloudTool {

@@ -25,7 +25,7 @@ Application::~Application() {
 
 bool Application::initialize(int width, int height) {
     // Initialize logger first
-    Log::init();
+    // Log::init();
     PC_CORE_INFO("Initializing Application: {}", name_);
 
     Time::initialize();
