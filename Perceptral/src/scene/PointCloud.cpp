@@ -1,4 +1,4 @@
-#include <Perceptral/resources/PointCloud.h>
+#include <Perceptral/scene/resources/PointCloud.h>
 #include <cmath>
 #include <limits>
 #include <pcl/common/transforms.h>

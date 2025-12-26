@@ -7,7 +7,6 @@
 
 namespace Perceptral {
 
-// Manages scene switching and scene stack
 class PC_API SceneManager {
 public:
     SceneManager() = default;

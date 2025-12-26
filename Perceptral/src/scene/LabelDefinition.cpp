@@ -1,5 +1,5 @@
 #include <Perceptral/core/Log.h>
-#include <Perceptral/resources/LabelDefinition.h>
+#include <Perceptral/scene/resources/LabelDefinition.h>
 
 namespace Perceptral {
 namespace Resource {

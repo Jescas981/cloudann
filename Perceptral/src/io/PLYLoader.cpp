@@ -1,6 +1,5 @@
-#include <Perceptral/resources/PointCloud.h>
+#include <Perceptral/scene/resources/PointCloud.h>
 #include <Perceptral/io/PLYLoader.h>
-#include <Perceptral/resources/PointCloud.h>
 #include <happly.h>
 #include <Perceptral/core/Log.h>
 

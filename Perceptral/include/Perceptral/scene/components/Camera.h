@@ -1,45 +1,29 @@
 #pragma once
-
 #include <Eigen/Eigen>
 #include <Perceptral/core/Macros.h>
 
 namespace Perceptral {
 namespace Component {
-class PC_API Camera {
-public:
-  Camera();
-  ~Camera();
 
-  void setPerspective(float fov, float aspect, float near, float far);
-  void setOrthographic(float left, float right, float bottom, float top,
-                       float near, float far);
+struct PC_API Camera {
+  float fov = 45.0f;
+  float aspectRatio = 16.0f / 9.0f;
+  float nearPlane = 0.1f;
+  float farPlane = 1000.0f;
 
-  Eigen::Matrix4f getProjectionMatrix() const;
+  bool autoAspect{true};
 
-  float getFOV() const { return fov_; }
-  float getAspectRatio() const { return aspectRatio_; }
-  float getNear() const { return nearPlane_; }
-  float getFar() const { return farPlane_; }
+  Eigen::Matrix4f projectionMatrix = Eigen::Matrix4f::Identity();
+  Eigen::Matrix4f viewMatrix = Eigen::Matrix4f::Identity();
+  Eigen::Matrix4f viewProjectionMatrix = Eigen::Matrix4f::Identity();
 
-private:
-  void recalcProjection();
-
-private:
-  // Projection parameters
-  bool isPerspective_;
-  float fov_;
-  float aspectRatio_;
-  float nearPlane_;
-  float farPlane_;
-
-  // Orthographic projection parameters
-  float orthoLeft_;
-  float orthoRight_;
-  float orthoBottom_;
-  float orthoTop_;
-
-  Eigen::Matrix4f projection_ = Eigen::Matrix4f::Identity();
+  bool needsProjectionUpdate = true;
+  bool needsViewUpdate = true;
 };
+
+struct PC_API MainCamera {};
+
+struct PC_API ActiveCamera {};
 
 } // namespace Component
 } // namespace Perceptral

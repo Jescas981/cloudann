@@ -60,8 +60,6 @@ void ImGuiLayer::shutdown()
         return;
     }
 
-    PC_CORE_INFO("Shutting down ImGui layer...");
-
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();

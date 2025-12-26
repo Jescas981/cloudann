@@ -1,5 +1,5 @@
-#include <Perceptral/platform/opengl/OpenGLRenderAPI.h>
 #include <Perceptral/core/Log.h>
+#include <Perceptral/platform/opengl/OpenGLRenderAPI.h>
 #include <Perceptral/renderer/VertexArray.h>
 #include <glad/glad.h>
 #include <iostream>
@@ -57,8 +57,8 @@ void OpenGLRenderAPI::drawIndexed(
 }
 
 void OpenGLRenderAPI::drawArrays(
-    const std::shared_ptr<VertexArray> &vertexArray, uint32_t vertexCount,
-    PrimitiveType type) {
+    const std::shared_ptr<VertexArray> &vertexArray, uint32_t first,
+    uint32_t vertexCount, PrimitiveType type) {
   vertexArray->bind();
   GLenum glType = GL_TRIANGLES; // Initialize with default
   switch (type) {
@@ -82,7 +82,7 @@ void OpenGLRenderAPI::drawArrays(
     break;
   }
 
-  glDrawArrays(glType, 0, vertexCount);
+  glDrawArrays(glType, first, vertexCount);
 }
 
 void OpenGLRenderAPI::setDepthTest(bool enabled) {

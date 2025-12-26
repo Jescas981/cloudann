@@ -1,5 +1,5 @@
-#include <Perceptral/renderer/Renderer.h>
 #include <Perceptral/renderer/RenderAPI.h>
+#include <Perceptral/renderer/Renderer.h>
 #include <Perceptral/renderer/VertexArray.h>
 
 namespace Perceptral {
@@ -42,8 +42,9 @@ void Renderer::drawIndexed(const std::shared_ptr<VertexArray> &vertexArray,
 }
 
 void Renderer::drawArrays(const std::shared_ptr<VertexArray> &vertexArray,
-                          uint32_t vertexCount, PrimitiveType type) {
-  s_RenderAPI->drawArrays(vertexArray, vertexCount, type);
+                          uint32_t first, uint32_t vertexCount,
+                          PrimitiveType type) {
+  s_RenderAPI->drawArrays(vertexArray, first, vertexCount, type);
 }
 
 void Renderer::setDepthTest(bool enabled) {

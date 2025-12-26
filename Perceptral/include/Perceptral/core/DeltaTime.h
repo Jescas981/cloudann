@@ -1,4 +1,5 @@
 #pragma once
+#include <Perceptral/core/Macros.h>
 
 namespace Perceptral {
 

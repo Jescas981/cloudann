@@ -1,0 +1,17 @@
+#pragma once
+#include <Perceptral/core/DeltaTime.h>
+#include <Perceptral/scene/components/Camera.h>
+#include <Perceptral/scene/components/OrbitCameraController.h>
+#include <Perceptral/scene/components/Transform.h>
+#include <Perceptral/scene/systems/System.h>
+#include <entt/entt.hpp>
+
+namespace Perceptral {
+
+class CameraControllerSystem : public System {
+public:
+  void onUpdate(entt::registry &registry, DeltaTime deltaTime) override;
+  void onEvent(entt::registry &registry, Event &event) override;
+};
+
+} // namespace Perceptral

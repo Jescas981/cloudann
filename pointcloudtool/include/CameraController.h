@@ -1,15 +1,9 @@
 #pragma once
 
-#include <Perceptral/core/Camera.h>
 #include <Perceptral/core/Event.h>
 #include <Perceptral/core/Input.h>
 
 namespace PointCloudTool {
-
-enum class CameraMode {
-    Orbit,
-    FPS
-};
 
 class CameraController {
 public:
@@ -18,11 +12,6 @@ public:
     bool onEvent(Perceptral::Event& e);
     bool isCapturingInput() const;
     
-    // Mode switching
-    void setMode(CameraMode mode) { mode_ = mode; }
-    CameraMode getMode() const { return mode_; }
-    void toggleMode();
-
     // Keyboard update (call in update loop)
     void onUpdate(float deltaTime);
 
@@ -41,9 +30,6 @@ private:
     bool firstMouse_ = true;
     float lastMouseX_ = 0.0f;
     float lastMouseY_ = 0.0f;
-    
-    // Camera mode
-    CameraMode mode_ = CameraMode::Orbit;
 };
 
 } // namespace PointCloudTool

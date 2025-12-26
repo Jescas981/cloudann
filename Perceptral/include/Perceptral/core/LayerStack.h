@@ -1,5 +1,5 @@
 #pragma once
-#include <Perceptral/core/Layer.h>
+#include <Perceptral/core/layers/Layer.h>
 #include <memory>
 #include <vector>
 
@@ -15,6 +15,7 @@ public:
     
     std::unique_ptr<Layer> popLayer(Layer* layer);
     std::unique_ptr<Layer> popOverlay(Layer* overlay);
+    void clear();
     
     Layer* operator[](size_t index) { return m_layers[index].get(); }
     size_t size() const { return m_layers.size(); }

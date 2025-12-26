@@ -1,197 +1,222 @@
 #include <Perceptral/core/Application.h>
+#include <Perceptral/core/DeltaTime.h>
+#include <Perceptral/core/Input.h>
 #include <Perceptral/core/Log.h>
 #include <Perceptral/core/Macros.h>
-#include <Perceptral/core/Window.h>
-#include <Perceptral/core/Input.h>
-#include <Perceptral/renderer/Renderer.h>
-#include <Perceptral/renderer/RenderAPI.h>
 #include <Perceptral/core/Time.h>
-#include <Perceptral/core/DeltaTime.h>
+#include <Perceptral/core/Window.h>
+#include <Perceptral/renderer/RenderAPI.h>
+#include <Perceptral/renderer/Renderer.h>
 
 namespace Perceptral {
 
-Application* Application::s_Instance = nullptr;
+Application *Application::s_Instance = nullptr;
 
-Application::Application(const std::string& name)
-    : name_(name)
-    , running_(false)
-    , lastFrameTime_(0.0) {
-    s_Instance = this;
+Application::Application() : running_(false), lastFrameTime_(0.0) {
+  s_Instance = this;
 }
 
-Application::~Application() {
-    shutdown();
-}
+Application::~Application() { shutdown(); }
 
-bool Application::initialize(int width, int height) {
-    PC_CORE_INFO("Initializing Application: {}", name_);
+bool Application::initialize() {
+  // Start with default config
+  config_ = getDefaultConfig();
 
-    Time::initialize();
-    PC_CORE_INFO("Time system initialized");
+  Log::init();
+  PC_CORE_INFO("Initializing Application: {}", config_.windowTitle);
 
-    window_ = std::make_unique<Window>();
-    
-    if (!window_->create(width, height, name_)) {
-        PC_CORE_ERROR("Failed to create window");
-        return false;
-    }
+  Time::initialize();
+  PC_CORE_INFO("Time system initialized");
 
-    PC_CORE_INFO("Window created: {}x{}", width, height);
+  window_ = std::make_unique<Window>();
 
-    // Initialize RenderAPI
-    Renderer::setRenderAPI(RenderAPI::create());
-    Renderer::init();
-    Renderer::setClearColor(Eigen::Vector4f(0.1f, 0.1f, 0.1f, 1.0f));
-    Renderer::setViewport(0, 0, width, height);
-    PC_CORE_INFO("Render API initialized");
+  if (!window_->create(config_.windowWidth, config_.windowHeight,
+                       config_.windowTitle)) {
+    PC_CORE_ERROR("Failed to create window");
+    return false;
+  }
 
-    // Initialize Input system (platform-independent)
-    Input::init(window_->getHandle());
-    PC_CORE_DEBUG("Input system initialized");
+  PC_CORE_INFO("Window created: {}x{}", config_.windowWidth,
+               config_.windowHeight);
 
-    // Initialize ImGui layer
-    imguiLayer_ = std::make_unique<ImGuiLayer>();
-    imguiLayer_->init(window_->getHandle());
-    PC_CORE_DEBUG("ImGui layer initialized");
+  // Initialize RenderAPI
+  Renderer::setRenderAPI(RenderAPI::create());
+  Renderer::init();
+  Renderer::setClearColor(Eigen::Vector4f(0.1f, 0.1f, 0.1f, 1.0f));
+  Renderer::setViewport(0, 0, config_.windowWidth, config_.windowHeight);
+  PC_CORE_INFO("Render API initialized");
 
-    // Create camera
-    camera_ = std::make_unique<Camera>();
-    // camera_->setPosition(Eigen::Vector3f(0.0f, -5.0f, 0.0f));
-    // camera_->setTarget(Eigen::Vector3f(0.0f, 0.0f, 0.0f));
-    camera_->setPerspective(45.0f, static_cast<float>(width) / height, 0.1f, 1000.0f);
-    PC_CORE_DEBUG("Camera initialized");
+  // Initialize Input system (platform-independent)
+  Input::init(window_->getHandle());
+  PC_CORE_DEBUG("Input system initialized");
 
-    // Create event manager and set callback
-    eventManager_ = std::make_unique<EventManager>();
-    eventManager_->initialize(window_->getHandle());
-    eventManager_->setEventCallback([this](Event& e) {
-        onEvent(e);
-    });
-    PC_CORE_DEBUG("Event manager initialized");
+  // Initialize ImGui layer
+  imguiLayer_ = std::make_unique<ImGuiLayer>();
+  imguiLayer_->init(window_->getHandle());
+  PC_CORE_DEBUG("ImGui layer initialized");
 
-    // User initialization
-    onInit();
+  // Create event manager and set callback
+  eventManager_ = std::make_unique<EventManager>();
+  eventManager_->initialize(window_->getHandle());
+  eventManager_->setEventCallback([this](Event &e) { onEvent(e); });
+  PC_CORE_DEBUG("Event manager initialized");
 
-    running_ = true;
-    lastFrameTime_ = Time::getTime();
+  // User initialization
+  onCreate();
 
-    PC_CORE_INFO("{} initialized successfully", name_);
-    return true;
+  if (auto *scene = sceneManager_.getCurrentScene()) {
+    scene->onCreate();
+  }
+
+  running_ = true;
+  lastFrameTime_ = Time::getTime();
+
+  PC_CORE_INFO("{} initialized successfully", config_.windowTitle);
+  return true;
 }
 
 void Application::run() {
-    while (running_ && !window_->shouldClose()) {
-        // Poll events
-        window_->pollEvents();
-        eventManager_->processEvents();
+  while (running_ && !window_->shouldClose()) {
+    // Poll events
+    window_->pollEvents();
+    eventManager_->processEvents();
 
-        // Update
-        float currentTime = Time::getTime();
-        DeltaTime deltaTime = currentTime - lastFrameTime_;
+    // Update
+    float currentTime = Time::getTime();
+    DeltaTime deltaTime = currentTime - lastFrameTime_;
+    lastFrameTime_ = currentTime;
 
-        // Update all layers (bottom to top)
-        for (Layer* layer : m_layerStack) {
-            layer->onUpdate(deltaTime);
-        }
-
-        onUpdate(deltaTime);
-
-        // Render all layers
-        Renderer::clear();
-        for (Layer* layer : m_layerStack) {
-            layer->onRender();
-        }
-        onRender();
-
-        // ImGui rendering
-        imguiLayer_->begin();
-
-        for (Layer* layer : m_layerStack) {
-            layer->onImGuiRender();
-        }
-
-        onImGuiRender();
-            
-        imguiLayer_->end();
-        window_->swapBuffers();
+    if (!sceneManager_.getCurrentScene()) {
+      PC_CORE_WARN("No scene loaded! Application will run but render nothing.");
     }
+
+    // Update all layers (bottom to top)
+    for (Layer *layer : layerStack_) {
+      layer->onUpdate(deltaTime);
+    }
+
+    if (auto *scene = sceneManager_.getCurrentScene()) {
+      scene->onUpdate(deltaTime);
+    }
+
+    onUpdate(deltaTime);
+
+    // Render all layers
+    Renderer::clear();
+    for (Layer *layer : layerStack_) {
+      layer->onRender();
+    }
+
+    if (auto *scene = sceneManager_.getCurrentScene()) {
+      scene->onRender();
+    }
+
+    onRender();
+
+    // ImGui rendering
+    imguiLayer_->begin();
+
+    for (Layer *layer : layerStack_) {
+      layer->onImGuiRender();
+    }
+
+    if (auto *scene = sceneManager_.getCurrentScene()) {
+      scene->onImGuiRender();
+    }
+
+    onImGuiRender();
+
+    imguiLayer_->end();
+    window_->swapBuffers();
+  }
 }
 
 void Application::shutdown() {
-    PC_CORE_INFO("Shutting down {}...", name_);
+  PC_CORE_INFO("Shutting down {}...", config_.windowTitle);
 
-    // Destroy all scenes
-    while (sceneManager_.hasScene()) {
-        sceneManager_.popScene();
-    }
+  if (auto *scene = sceneManager_.getCurrentScene()) {
+    scene->onDestroy();
+  }
 
-    onShutdown();
+  onDestroy();
 
-     for (Layer* layer : m_layerStack) {
-        layer->onDetach();
-    }
+  // Destroy all scenes
+  while (sceneManager_.hasScene()) {
+    sceneManager_.popScene();
+  }
 
-    PC_CORE_DEBUG("Layers should go down");
+  for (Layer *layer : layerStack_) {
+    layer->onDetach();
+  }
 
-    camera_.reset();
-    eventManager_.reset();
-    Input::shutdown();
-    Renderer::shutdown();
-    window_.reset();
+  // Clear all layers
+  layerStack_.clear();
 
-    PC_CORE_INFO("Application shutdown complete");
-    Log::shutdown();
+  if (imguiLayer_) {
+    PC_CORE_INFO("Shutting down ImGui layer...");
+    imguiLayer_->shutdown();
+  }
+
+  PC_CORE_DEBUG("Layers should go down");
+
+  eventManager_.reset();
+  Input::shutdown();
+  Renderer::shutdown();
+  window_.reset();
+
+  onShutdown();
+
+  PC_CORE_INFO("Application shutdown complete");
+  Log::shutdown();
 }
 
-void Application::onEvent(Event& e) {
-    // Let ImGui handle events first
-    imguiLayer_->onEvent(e);
+void Application::onEvent(Event &e) {
+  // Let ImGui handle events first
+  imguiLayer_->onEvent(e);
 
-    // If ImGui handled it, don't process further
+  // If ImGui handled it, don't process further
+  if (e.isHandled()) {
+    return;
+  }
+
+  // Forward to layers (top to bottom - reverse order)
+  for (auto it = layerStack_.rbegin(); it != layerStack_.rend(); ++it) {
+    (*it)->onEvent(e);
     if (e.isHandled()) {
-        return;
+      return;
     }
+  }
 
-    EventDispatcher dispatcher(e);
-
-    // Dispatch to default handlers
-    dispatcher.dispatch<WindowCloseEvent>([this](WindowCloseEvent& event) {
-        return onWindowClose(event);
-    });
-
-    dispatcher.dispatch<WindowResizeEvent>([this](WindowResizeEvent& event) {
-        return onWindowResize(event);
-    });
-}
-
-bool Application::onWindowClose(WindowCloseEvent& e) {
-    UNUSED(e);
-    stop();
-    return true;
-}
-
-bool Application::onWindowResize(WindowResizeEvent& e) {
-    PC_CORE_DEBUG("Window resized: {}x{}", e.getWidth(), e.getHeight());
-    Renderer::setViewport(0, 0, e.getWidth(), e.getHeight());
-    window_->setHeight(e.getHeight());
-    window_->setWidth(e.getWidth());
-    if (camera_) {
-        camera_->setPerspective(camera_->getFOV(),
-                               static_cast<float>(e.getWidth()) / e.getHeight(),
-                               camera_->getNear(),
-                               camera_->getFar());
+  // Forward to scene
+  if (auto *scene = sceneManager_.getCurrentScene()) {
+    scene->onEvent(e);
+    if (e.isHandled()) {
+      return;
     }
-    return false;
+  }
+
+  EventDispatcher dispatcher(e);
+
+  // Dispatch to default handlers
+  dispatcher.dispatch<WindowCloseEvent>(
+      [this](WindowCloseEvent &event) { return onWindowClose(event); });
+
+  dispatcher.dispatch<WindowResizeEvent>(
+      [this](WindowResizeEvent &event) { return onWindowResize(event); });
 }
 
-void Application::pushScene(std::shared_ptr<Scene> scene) {
-    scene->setCamera(camera_.get());
-    sceneManager_.pushScene(scene);
+bool Application::onWindowClose(WindowCloseEvent &e) {
+  UNUSED(e);
+  stop();
+  return true;
 }
 
-void Application::setScene(std::shared_ptr<Scene> scene) {
-    scene->setCamera(camera_.get());
-    sceneManager_.setScene(scene);
+bool Application::onWindowResize(WindowResizeEvent &e) {
+  PC_CORE_DEBUG("Window resized: {}x{}", e.getWidth(), e.getHeight());
+  Renderer::setViewport(0, 0, e.getWidth(), e.getHeight());
+  window_->setHeight(e.getHeight());
+  window_->setWidth(e.getWidth());
+  return false;
 }
 
 } // namespace Perceptral
