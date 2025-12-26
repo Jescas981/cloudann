@@ -8,7 +8,7 @@
 #include <Perceptral/core/Window.h>
 #include <Perceptral/scene/Entity.h>
 #include <Perceptral/scene/SceneManager.h>
-#include <Perceptral/scene/components/Camera.h>
+#include <Perceptral/scene/Components.h>
 #include <Perceptral/ui/ImGuiLayer.h>
 #include <memory>
 #include <string>

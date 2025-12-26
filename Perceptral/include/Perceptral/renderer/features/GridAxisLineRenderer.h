@@ -2,7 +2,7 @@
 #include <memory>
 #include <Perceptral/renderer/VertexArray.h>
 #include <Perceptral/renderer/Shader.h>
-#include <Perceptral/scene/components/Camera.h>
+#include <Perceptral/scene/Components.h>
 
 namespace Perceptral {
 

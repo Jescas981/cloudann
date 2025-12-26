@@ -1,5 +1,6 @@
+#include "Perceptral/scene/Entity.h"
+#include <Perceptral/scene/Components.h>
 #include <Perceptral/scene/Scriptable.h>
-#include <Perceptral/scene/components/NativeScript.h>
 #include <Perceptral/scene/systems/ScriptSystem.h>
 
 namespace Perceptral {
@@ -12,7 +13,7 @@ void ScriptSystem::onCreate(entt::registry &registry) {
 
     if (!nsc.instance) {
       nsc.instance = nsc.instantiate();
-      nsc.instance->setEntity(entity, &registry);
+      nsc.instance->attach(Entity(entity, &registry));
       nsc.instance->onCreate();
     }
   }
@@ -35,7 +36,7 @@ void ScriptSystem::onEvent(entt::registry &registry, Event &e) {
 
   for (auto entity : view) {
     auto &nsc = view.get<Component::NativeScript>(entity);
-    if (nsc.instance){
+    if (nsc.instance) {
       nsc.instance->onEvent(e);
     }
   }

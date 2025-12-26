@@ -1,9 +1,8 @@
 #pragma once
 
-#include <Eigen/Core>
-#include <Eigen/Geometry>
+#include <Eigen/Eigen>
+#include <Perceptral/scene/Components.h>
 
-#include <Perceptral/scene/components/Transform.h>
 
 namespace Perceptral::Math {
 
@@ -32,7 +31,7 @@ inline Eigen::Matrix4f toMatrix(const Component::Transform &t) {
   Eigen::Matrix4f m = Eigen::Matrix4f::Identity();
 
   m.block<3, 3>(0, 0) = t.rotation.toRotationMatrix();
-  m.block<3, 1>(0, 3) = t.position;
+  m.block<3, 1>(0, 3) = t.translation;
 
   return m;
 }
@@ -78,7 +77,7 @@ inline Eigen::Matrix4f getTransform(const Component::Transform &t) {
 
   Eigen::Matrix4f M = Eigen::Matrix4f::Identity();
   M.block<3, 3>(0, 0) = R * S;
-  M.block<3, 1>(0, 3) = t.position;
+  M.block<3, 1>(0, 3) = t.translation;
 
   return M;
 }
@@ -86,7 +85,7 @@ inline Eigen::Matrix4f getTransform(const Component::Transform &t) {
 inline Eigen::Matrix4f getInvTransform(const Component::Transform &t) {
   Eigen::Matrix3f R = t.rotation.toRotationMatrix();
   Eigen::Matrix3f S_inv = t.scale.cwiseInverse().asDiagonal();
-  Eigen::Vector3f T = t.position;
+  Eigen::Vector3f T = t.translation;
 
   Eigen::Matrix4f inv = Eigen::Matrix4f::Identity();
   inv.block<3, 3>(0, 0) = S_inv * R.transpose();

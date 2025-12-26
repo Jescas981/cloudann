@@ -12,7 +12,7 @@ namespace Perceptral {
 namespace Resource {
 
 // Resource types
-enum class ResourceType { Texture, Shader, Mesh, Material, Unknown };
+enum class ResourceType { Shader, Mesh, Material, Unknown };
 
 class PC_API Resource {
 public:

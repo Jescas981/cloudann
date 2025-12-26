@@ -1,7 +1,9 @@
 #pragma once
+#include "Perceptral/scene/Entity.h"
+#include "Perceptral/scene/systems/ScriptSystem.h"
 #include <Perceptral/core/DeltaTime.h>
 #include <Perceptral/core/Event.h>
-#include <Perceptral/scene/components/NativeScript.h>
+#include <Perceptral/scene/Components.h>
 #include <entt/entt.hpp>
 
 namespace Perceptral {
@@ -14,14 +16,24 @@ public:
   virtual void onUpdate(DeltaTime dt) { UNUSED(dt); }
   virtual void onEvent(Event &e) { UNUSED(e); }
 
-  void setEntity(entt::entity entity, entt::registry *registry) {
+  inline Component::Transform &getTransform() { return *transform_; }
+  Entity &getEntity() { return entity_; }
+
+private:
+  void attach(Entity entity) {
     entity_ = entity;
-    registry_ = registry;
+
+    if (!entity_.hasComponent<Component::Transform>()) {
+      entity_.addComponent<Component::Transform>();
+    }
+
+    transform_ = &entity_.getComponent<Component::Transform>();
   }
 
-protected:
-  entt::entity entity_{entt::null};
-  entt::registry *registry_{nullptr};
+private:
+  friend class ScriptSystem;
+  Entity entity_;
+  Component::Transform *transform_{nullptr};
 };
 
 template <typename T> void BindNativeScript(Component::NativeScript &ns) {

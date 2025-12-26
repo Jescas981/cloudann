@@ -40,12 +40,12 @@ set(CORE_SOURCES
 
     # Scene (EnTT ECS)
     src/scene/Scene.cpp
-    src/scene/Entity.cpp
     src/scene/SceneManager.cpp
     src/scene/PointCloud.cpp
     src/scene/LabelDefinition.cpp
     src/scene/systems/CameraSystem.cpp
     src/scene/systems/CameraControllerSystem.cpp
+    src/scene/systems/RenderSystem.cpp
     src/scene/systems/ScriptSystem.cpp
 
     # I/O
@@ -89,6 +89,7 @@ set(CORE_HEADERS
     include/Perceptral/scene/SceneManager.h
     include/Perceptral/scene/systems/CameraSystem.h
     include/Perceptral/scene/systems/CameraControllerSystem.h
+    include/Perceptral/scene/systems/RenderSystem.h
     include/Perceptral/scene/systems/ScriptSystem.h
 
     # I/O

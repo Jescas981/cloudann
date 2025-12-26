@@ -1,7 +1,7 @@
 #include "Perceptral/core/Event.h"
 #include "Perceptral/core/Log.h"
 #include "Perceptral/core/math/TransformUtils.h"
-#include <Perceptral/scene/components/Camera.h>
+#include <Perceptral/scene/Components.h>
 #include <Perceptral/scene/systems/CameraSystem.h>
 #include <iostream>
 
@@ -25,8 +25,8 @@ void CameraSystem::onUpdate(entt::registry &registry, DeltaTime deltaTime) {
 
     if (camera.needsViewUpdate) {
       Eigen::Vector3f forward = transform.rotation * Eigen::Vector3f::UnitY();
-      Eigen::Vector3f target = transform.position + forward;
-      camera.viewMatrix = Math::lookAt(transform.position, target);
+      Eigen::Vector3f target = transform.translation + forward;
+      camera.viewMatrix = Math::lookAt(transform.translation, target);
       camera.viewProjectionMatrix = camera.projectionMatrix * camera.viewMatrix;
       camera.needsViewUpdate = false;
     }

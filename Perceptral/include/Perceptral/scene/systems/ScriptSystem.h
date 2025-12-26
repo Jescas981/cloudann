@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Perceptral/scene/components/NativeScript.h>
 #include <Perceptral/scene/systems/System.h>
 
 namespace Perceptral {

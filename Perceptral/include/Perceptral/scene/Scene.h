@@ -3,7 +3,7 @@
 #include "Perceptral/core/Event.h"
 #include <Perceptral/core/DeltaTime.h>
 #include <Perceptral/scene/Entity.h>
-#include <Perceptral/scene/components/Camera.h>
+#include <Perceptral/scene/Components.h>
 #include <Perceptral/scene/systems/System.h>
 #include <entt/entt.hpp>
 #include <string>
@@ -55,23 +55,5 @@ private:
   std::vector<std::unique_ptr<System>> systems_;
 };
 
-// Entity template method implementations
-template <typename T, typename... Args>
-inline T &Entity::addComponent(Args &&...args) {
-  return scene_->registry_.template emplace<T>(entityHandle_,
-                                               std::forward<Args>(args)...);
-}
-
-template <typename T> inline T &Entity::getComponent() {
-  return scene_->registry_.template get<T>(entityHandle_);
-}
-
-template <typename T> inline bool Entity::hasComponent() const {
-  return scene_->registry_.template all_of<T>(entityHandle_);
-}
-
-template <typename T> inline void Entity::removeComponent() {
-  scene_->registry_.template erase<T>(entityHandle_);
-}
 
 } // namespace Perceptral

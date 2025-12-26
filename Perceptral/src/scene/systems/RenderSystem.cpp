@@ -1,8 +1,7 @@
-#include "Perceptral/core/math/TransformUtils.h"
-#include "Perceptral/renderer/Renderer.h"
-#include "Perceptral/scene/components/Renderable.h"
-#include <Perceptral/scene/components/Camera.h>
+#include <Perceptral/core/math/TransformUtils.h>
+#include <Perceptral/renderer/Renderer.h>
 #include <Perceptral/scene/systems/RenderSystem.h>
+#include <iostream>
 
 namespace Perceptral {
 
@@ -16,7 +15,6 @@ void RenderSystem::onRender(entt::registry &registry) {
   auto &camera = camView.get<Component::Camera>(cameraEntity);
 
   renderMeshes(registry, camera);
-  renderPointClouds(registry, camera);
 }
 
 void RenderSystem::renderMeshes(entt::registry &registry,
@@ -36,26 +34,20 @@ void RenderSystem::renderMeshes(entt::registry &registry,
 
     // Bind shader
     auto &material = renderer.material;
-    material.shader->bind();
-    // Load uniforms
     Eigen::Matrix4f modelMatrix = Math::toMatrix(transform);
-    material.shader->setMat4("u_Projection", camera.projectionMatrix);
-    material.shader->setMat4("u_View", camera.viewMatrix);
-    material.shader->setMat4("u_Model", modelMatrix);
+    auto shader = material.getShader();
 
-    // Upload Material-specific uniforms
-    for (auto &[name, value] : material.floatUniforms) {
-      material.shader->setFloat(name, value);
+    // Check if shader exists
+    if (!shader) {
+      continue; // Skip this entity if no shader
     }
-    for (auto &[name, value] : material.intUniforms) {
-      material.shader->setInt(name, value);
-    }
-    for (auto &[name, value] : material.vec3Uniforms) {
-      material.shader->setFloat3(name, value);
-    }
-    for (auto &[name, value] : material.boolUniforms) {
-      material.shader->setBool(name, value);
-    }
+
+    shader->bind();
+    // Load uniforms
+    shader->setMat4("u_ProjectionView", camera.viewProjectionMatrix);
+    shader->setMat4("u_Model", modelMatrix);
+    shader->setFloat3("u_Color", material.getColor());
+    shader->setFloat("u_Opacity", material.getOpacity());
 
     if (meshData.isDirty) {
       // Create VAO if it doesn't exist yet
@@ -68,8 +60,7 @@ void RenderSystem::renderMeshes(entt::registry &registry,
                                                meshData.vertices.size() *
                                                    sizeof(Eigen::Vector3f));
 
-      vertexBuffer->setLayout({{ShaderDataType::Float3, "aPosition"},
-                               {ShaderDataType::Float3, "aNormal"}});
+      vertexBuffer->setLayout({{ShaderDataType::Float3, "aPosition"}});
 
       // Attach buffer to VAO
       renderer.gpu.vao->clearVertexBuffers();
@@ -86,8 +77,5 @@ void RenderSystem::renderMeshes(entt::registry &registry,
     Renderer::drawIndexed(renderer.gpu.vao, renderer.gpu.indexCount);
   }
 }
-
-void RenderSystem::renderPointClouds(entt::registry &registry,
-                                     const Component::Camera &camera) {}
 
 } // namespace Perceptral

@@ -1,13 +1,11 @@
 #include "Perceptral/scene/Scriptable.h"
-#include "Perceptral/scene/components/NativeScript.h"
+#include <Perceptral/scene/Components.h>
 #include "cube.h"
 #include <Eigen/Eigen>
 #include <Perceptral/EntryPoint.h>
 #include <Perceptral/Perceptral.h>
 #include <Perceptral/core/layers/GameLayer.h>
 #include <Perceptral/renderer/Renderer.h>
-#include <Perceptral/scene/components/OrbitCameraController.h>
-#include <Perceptral/scene/components/Transform.h>
 #include <memory>
 
 class MyExampleApp : public Perceptral::Application {

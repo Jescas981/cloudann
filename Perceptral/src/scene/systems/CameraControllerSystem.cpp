@@ -5,9 +5,7 @@
 #include <Perceptral/core/DeltaTime.h>
 #include <Perceptral/core/Log.h>
 #include <Perceptral/core/math/TransformUtils.h>
-#include <Perceptral/scene/components/Camera.h>
-#include <Perceptral/scene/components/OrbitCameraController.h>
-#include <Perceptral/scene/components/Transform.h>
+#include <Perceptral/scene/Components.h>
 #include <Perceptral/scene/systems/System.h>
 #include <entt/entt.hpp>
 
@@ -43,9 +41,9 @@ void CameraControllerSystem::onUpdate(entt::registry &registry,
     offset.z() = controller.distance * std::sin(pitchRad);
 
     // Compute position again
-    transform.position = controller.target + offset;
+    transform.translation = controller.target + offset;
 
-    auto mat = Math::lookRotation((controller.target - transform.position),
+    auto mat = Math::lookRotation((controller.target - transform.translation),
                                   Eigen::Vector3f::UnitZ());
 
     transform.rotation = Eigen::Quaternionf(mat);

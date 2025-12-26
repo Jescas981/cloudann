@@ -2,8 +2,7 @@
 #include <Perceptral/core/DeltaTime.h>
 #include <Perceptral/core/Macros.h>
 #include <Perceptral/scene/Scene.h>
-#include <Perceptral/scene/components/Tag.h>
-#include <Perceptral/scene/components/Transform.h>
+#include <Perceptral/scene/Components.h>
 
 namespace Perceptral {
 
@@ -63,7 +62,7 @@ void Scene::setMainCamera(Entity cameraEntity) {
 Entity Scene::getMainCamera() {
     auto view = registry_.view<Component::Camera, Component::MainCamera>();
     if (view.begin() != view.end()) {
-        return Entity{*view.begin(), this};
+        return Entity{*view.begin(), &registry_};
     }
     Entity cameraEntity = createEntity("MainCamera");
     cameraEntity.addComponent<Component::Camera>();
@@ -73,7 +72,7 @@ Entity Scene::getMainCamera() {
 
 
 Entity Scene::createEntity(const std::string &name) {
-  Entity entity = {registry_.create(), this};
+  Entity entity = {registry_.create(), &registry_};
   entity.addComponent<Component::Tag>(name);
   entity.addComponent<Component::Transform>();
   return entity;
@@ -88,7 +87,7 @@ Entity Scene::findEntityByName(const std::string &name) {
   for (auto entity : view) {
     const Component::Tag &tag = view.get<Component::Tag>(entity);
     if (tag.tag == name) {
-      return {entity, this};
+      return {entity, &registry_};
     }
   }
   return {};

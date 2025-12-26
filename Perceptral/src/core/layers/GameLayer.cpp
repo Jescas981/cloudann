@@ -1,6 +1,7 @@
+#include "Perceptral/scene/systems/RenderSystem.h"
 #include <Perceptral/core/Log.h>
 #include <Perceptral/core/layers/GameLayer.h>
-#include <Perceptral/scene/components/Camera.h>
+#include <Perceptral/scene/Components.h>
 #include <Perceptral/scene/systems/CameraControllerSystem.h>
 #include <Perceptral/scene/systems/CameraSystem.h>
 #include <Perceptral/scene/systems/ScriptSystem.h>
@@ -16,6 +17,7 @@ void GameLayer::onAttach() {
   // Add systems
   scene_.addSystem<CameraSystem>();
   scene_.addSystem<CameraControllerSystem>();
+  scene_.addSystem<RenderSystem>();
   scene_.addSystem<ScriptSystem>();
 }
 

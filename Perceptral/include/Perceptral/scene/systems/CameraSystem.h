@@ -1,8 +1,6 @@
 #pragma once
 #include <Perceptral/core/DeltaTime.h>
-#include <Perceptral/scene/components/Camera.h>
-#include <Perceptral/scene/components/OrbitCameraController.h>
-#include <Perceptral/scene/components/Transform.h>
+#include <Perceptral/scene/Components.h>
 #include <Perceptral/scene/systems/System.h>
 #include <entt/entt.hpp>
 

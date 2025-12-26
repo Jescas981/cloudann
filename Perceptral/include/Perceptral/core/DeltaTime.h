@@ -28,13 +28,13 @@ public:
      * @brief Get time in seconds
      * @return Time in seconds as float
      */
-    float getSeconds() const { return m_time; }
+    float seconds() const { return m_time; }
     
     /**
      * @brief Get time in milliseconds
      * @return Time in milliseconds as float
      */
-    float getMilliseconds() const { return m_time * 1000.0f; }
+    float milliseconds() const { return m_time * 1000.0f; }
 
 private:
     float m_time;  // Time in seconds
