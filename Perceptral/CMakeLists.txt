@@ -51,6 +51,7 @@
 
         # I/O
         src/io/PLYLoader.cpp
+        src/io/PCDLoader.cpp
         src/io/ImageExporter.cpp
 
         # UI

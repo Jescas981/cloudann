@@ -1,6 +1,7 @@
 #include "SceneController.h"
 #include <Perceptral/core/Log.h>
 #include <Perceptral/io/PLYLoader.h>
+#include <Perceptral/io/PCDLoader.h>
 #include <filesystem>
 
 namespace PointCloudTool {
@@ -164,6 +165,9 @@ bool SceneController::loadPointCloudFromFile(const std::string& filepath)
 
     if (extension == ".ply") {
         pointCloud = Perceptral::PLYLoader::load(filepath);
+    } else if(extension == ".pcd"){
+        pointCloud = Perceptral::PCDLoader::load(filepath);
+
     } else {
         PC_CORE_ERROR("Unsupported file format: {}", extension);
         return false;
