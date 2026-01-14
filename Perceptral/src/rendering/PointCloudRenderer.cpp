@@ -11,7 +11,7 @@
 namespace Perceptral {
 
 PointCloudRenderer::PointCloudRenderer()
-    : pointSize_(3.0f), lastPointCount_(0), lastSelectionHash_(0) {}
+    : pointSize_(3.0f), lastPointCount_(0), pointCount_(0), lastSelectionHash_(0) {}
 
 PointCloudRenderer::~PointCloudRenderer() {}
 
@@ -110,7 +110,7 @@ void PointCloudRenderer::render(const PointCloud &pointCloud,
 
   // Render points
   vertexArray_->bind();
-  glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(pointCloud.size()));
+  glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(pointCount_));
 
   GLenum err = glGetError();
   if (err != GL_NO_ERROR) {
@@ -123,13 +123,15 @@ void PointCloudRenderer::render(const PointCloud &pointCloud,
 void PointCloudRenderer::updateBuffers(const PointCloud &pointCloud,
                                        const PointCloudComponent &component) {
   auto cloud = pointCloud.getCloud();
-
+  
   // Prepare vertex data: position (vec3) + color (vec3) + selectionMask (float)
   // + label (float)
   std::vector<float> vertexData;
   vertexData.reserve(
       cloud->size() *
       8); // 3 for position, 3 for color, 1 for selection, 1 for label
+
+  pointCount_ = 0;
 
   //   size_t visibleCount = 0;
   for (size_t i = 0; i < cloud->size(); ++i) {
@@ -173,7 +175,7 @@ void PointCloudRenderer::updateBuffers(const PointCloud &pointCloud,
       labelValue = static_cast<float>(component.labels[i]);
     }
     vertexData.push_back(labelValue);
-
+    pointCount_++;
   }
 
   auto vertexBuffer = VertexBuffer::create(vertexData.data(),

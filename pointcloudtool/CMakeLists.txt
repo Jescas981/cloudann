@@ -44,6 +44,8 @@ set(POINTCLOUDTOOL_SOURCES
     src/SelectionTool.cpp
 )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 add_subdirectory(external/nativefiledialog-extended)
 # Point Cloud Tool executable
 add_executable(pointcloudtool ${POINTCLOUDTOOL_SOURCES})

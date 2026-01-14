@@ -39,6 +39,7 @@ private:
 
     float pointSize_;
     size_t lastPointCount_;
+    size_t pointCount_;
     size_t lastSelectionHash_;
 };
 
